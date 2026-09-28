@@ -1,0 +1,2681 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Taller interactivo de CSS para SMR 1: lecciones, ejercicios corregidos por el navegador con vista previa en vivo y examen cronometrado.">
+<style>
+  :root{color-scheme:light dark}
+  body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}
+  img{max-width:100%}
+  [hidden]:not([hidden="until-found"]){display:none!important}
+</style>
+</head>
+<body>
+<title>Taller de CSS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=JetBrains+Mono:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root{
+    --paper:#E9EDEF;
+    --surface:#FFFFFF;
+    --surface-2:#F2F6F7;
+    --ink:#0E1A1C;
+    --ink-soft:#516468;
+    --line:#C7D4D7;
+    --line-suave:#DEE7E9;
+    --accent:#0A6F66;
+    --accent-fuerte:#08574F;
+    --accent-soft:#DCEDEA;
+    --btn-text:#FFFFFF;
+    --ok:#24693B;
+    --ok-soft:#DCEEE1;
+    --bad:#A32B24;
+    --bad-soft:#F7E1DE;
+    --warn:#8A5B0E;
+    --warn-soft:#F7ECD8;
+    --shadow:0 1px 2px rgba(14,26,28,.05), 0 12px 26px -20px rgba(14,26,28,.55);
+    --radio:6px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0B1315;
+      --surface:#121D20;
+      --surface-2:#172427;
+      --ink:#E6EDEE;
+      --ink-soft:#9CB0B4;
+      --line:#2A3A3E;
+      --line-suave:#202F33;
+      --accent:#4FC5B4;
+      --accent-fuerte:#7FDACC;
+      --accent-soft:#14312F;
+      --btn-text:#05201D;
+      --ok:#6FCB8E;
+      --ok-soft:#12291B;
+      --bad:#F08076;
+      --bad-soft:#2F1614;
+      --warn:#E3B15C;
+      --warn-soft:#2A2012;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 30px -22px #000;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0B1315;
+    --surface:#121D20;
+    --surface-2:#172427;
+    --ink:#E6EDEE;
+    --ink-soft:#9CB0B4;
+    --line:#2A3A3E;
+    --line-suave:#202F33;
+    --accent:#4FC5B4;
+    --accent-fuerte:#7FDACC;
+    --accent-soft:#14312F;
+    --btn-text:#05201D;
+    --ok:#6FCB8E;
+    --ok-soft:#12291B;
+    --bad:#F08076;
+    --bad-soft:#2F1614;
+    --warn:#E3B15C;
+    --warn-soft:#2A2012;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 30px -22px #000;
+  }
+
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Source Serif 4", Georgia, serif;
+    font-size:16px;
+    line-height:1.55;
+    padding-block:20px 70px;
+    padding-left:16px; padding-right:16px;
+  }
+  .wrap{max-width:1140px; margin:0 auto; display:flex; flex-direction:column; gap:18px}
+
+  h1,h2,h3,.ui{font-family:"Archivo", system-ui, sans-serif}
+  h1{font-size:clamp(23px,3vw,34px); font-weight:800; letter-spacing:-.022em; margin:0; text-wrap:balance}
+  h2{font-size:17px; font-weight:600; margin:0; letter-spacing:-.01em}
+  p{margin:0}
+  code,pre,textarea,.mono{font-family:"JetBrains Mono", ui-monospace, Consolas, monospace}
+
+  .eyebrow{
+    font-family:"Archivo",sans-serif; font-size:10.5px; font-weight:600;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--accent);
+  }
+
+  /* ---------- cabecera ---------- */
+  header.top{display:flex; flex-wrap:wrap; gap:14px 24px; align-items:flex-end; justify-content:space-between}
+  header.top .lead{max-width:56ch; color:var(--ink-soft); font-size:14.5px; margin-top:5px}
+
+  .chips{display:flex; flex-wrap:wrap; gap:8px}
+  .chip{
+    display:flex; align-items:baseline; gap:7px; background:var(--surface); border:1px solid var(--line);
+    border-radius:999px; padding:6px 13px; box-shadow:var(--shadow);
+  }
+  .chip .v{font-family:"Archivo",sans-serif; font-weight:800; font-size:15px; font-variant-numeric:tabular-nums; line-height:1}
+  .chip .k{font-family:"Archivo",sans-serif; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft)}
+  .chip[data-tono="racha"] .v{color:var(--accent)}
+  button.chip-persona{
+    cursor:pointer; border-color:var(--accent); background:var(--accent-soft);
+    align-items:baseline; font-family:"Archivo",sans-serif;
+  }
+  button.chip-persona .v{color:var(--accent-fuerte); max-width:14ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  button.chip-persona .k{color:var(--accent-fuerte); opacity:.75}
+  button.chip-persona:hover{background:var(--accent); }
+  button.chip-persona:hover .v, button.chip-persona:hover .k{color:var(--btn-text)}
+
+  /* ---------- guia de bienvenida ---------- */
+  .guia{
+    background:var(--accent-soft); border:1px solid var(--accent); border-radius:var(--radio);
+    padding:16px 18px; display:flex; flex-direction:column; gap:12px;
+  }
+  .guia h2{color:var(--accent-fuerte)}
+  .guia ol{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:7px; font-size:14.5px}
+  .guia .cerrar{align-self:flex-start}
+
+  /* ---------- navegacion ---------- */
+  .modos{
+    display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:6px;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radio); padding:6px; box-shadow:var(--shadow);
+  }
+  @media (max-width:900px){ .modos{grid-template-columns:repeat(3, minmax(0,1fr))} }
+  @media (max-width:560px){ .modos{grid-template-columns:repeat(2, minmax(0,1fr))} }
+  .modos button{
+    padding:10px 10px; border:0; background:transparent; color:var(--ink-soft);
+    border-radius:4px; font-size:13.5px; text-align:center; line-height:1.25;
+  }
+  .modos button:hover{color:var(--ink); background:var(--surface-2)}
+  .modos button[aria-pressed="true"]{background:var(--accent); color:var(--btn-text); box-shadow:inset 0 0 0 1px var(--accent-fuerte)}
+  .modos .sub{display:block; font-weight:500; font-size:10px; letter-spacing:.09em; text-transform:uppercase; opacity:.8; margin-top:3px}
+  .ayuda-modo{
+    font-size:14px; color:var(--ink-soft); padding:0 3px;
+  }
+
+  /* ---------- barras de estado ---------- */
+  .barra{
+    display:flex; flex-wrap:wrap; gap:10px 22px; align-items:center; justify-content:space-between;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radio); padding:10px 15px; box-shadow:var(--shadow);
+  }
+  .barra .grupo{display:flex; gap:18px; align-items:baseline; flex-wrap:wrap}
+  .barra .dato{display:flex; gap:7px; align-items:baseline}
+  .barra .dato .k{font-family:"Archivo",sans-serif; font-size:10px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-soft)}
+  .barra .dato .v{font-family:"Archivo",sans-serif; font-weight:800; font-size:16px; font-variant-numeric:tabular-nums}
+  .progreso-sesion{flex:1 1 160px; min-width:120px; height:6px; border-radius:4px; background:var(--surface-2); border:1px solid var(--line-suave); overflow:hidden}
+  .progreso-sesion span{
+    display:block; height:100%; width:100%; background:var(--accent);
+    transform:scaleX(0); transform-origin:left center; transition:transform .25s ease;
+  }
+
+  /* ---------- mapa ---------- */
+  .mapa-caja{display:flex; flex-direction:column; gap:9px}
+  .mapa{display:flex; flex-wrap:wrap; gap:9px}
+  .bloque{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radio); padding:10px 12px;
+    display:flex; flex-direction:column; gap:8px; flex:1 1 200px; min-width:0;
+  }
+  .bloque .bt{display:flex; justify-content:space-between; gap:10px; align-items:baseline}
+  .bloque .bt span:first-child{font-family:"Archivo",sans-serif; font-weight:600; font-size:12.5px}
+  .bloque .bt span:last-child{font-size:11px; color:var(--ink-soft); font-variant-numeric:tabular-nums; font-family:"Archivo",sans-serif}
+  .pips{display:flex; gap:5px; flex-wrap:wrap}
+  .pip{
+    width:22px; height:22px; border-radius:4px; border:1px solid var(--line); background:var(--surface-2);
+    font-family:"Archivo",sans-serif; font-size:10px; font-weight:600; color:var(--ink-soft);
+    display:grid; place-items:center; cursor:pointer; padding:0; line-height:1;
+  }
+  .pip:hover{border-color:var(--accent); color:var(--accent)}
+  .pip[data-state="done"]{background:var(--ok-soft); border-color:var(--ok); color:var(--ok)}
+  .pip[data-state="fallado"]{background:var(--warn-soft); border-color:var(--warn); color:var(--warn)}
+  .pip[aria-current="true"]{outline:2px solid var(--accent); outline-offset:1px}
+  .leyenda{display:flex; flex-wrap:wrap; gap:14px; font-size:12.5px; color:var(--ink-soft); padding:0 3px}
+  .leyenda span{display:flex; align-items:center; gap:6px}
+  .leyenda i{width:11px; height:11px; border-radius:3px; border:1px solid var(--line); background:var(--surface-2); display:inline-block}
+  .leyenda i.ok{background:var(--ok-soft); border-color:var(--ok)}
+  .leyenda i.pend{background:var(--warn-soft); border-color:var(--warn)}
+
+  /* ---------- paneles ---------- */
+  .taller{display:grid; grid-template-columns:minmax(0,0.82fr) minmax(0,1.18fr); gap:16px; align-items:start}
+  @media (max-width:900px){ .taller{grid-template-columns:minmax(0,1fr)} }
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radio); box-shadow:var(--shadow)}
+  .card .hd{padding:13px 16px; border-bottom:1px solid var(--line-suave); display:flex; gap:12px; align-items:center; justify-content:space-between}
+  .card .bd{padding:16px; display:flex; flex-direction:column; gap:14px}
+  .card .hd .paso-n{
+    font-family:"Archivo",sans-serif; font-size:10px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+    color:var(--accent); white-space:nowrap;
+  }
+
+  .tag{
+    font-family:"Archivo",sans-serif; font-size:10px; font-weight:600; letter-spacing:.11em; text-transform:uppercase;
+    padding:3px 8px; border-radius:999px; background:var(--accent-soft); color:var(--accent-fuerte); white-space:nowrap;
+  }
+  .enunciado{font-size:17px; line-height:1.5}
+
+  .rotulo{
+    font-family:"Archivo",sans-serif; font-size:10.5px; font-weight:600; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--ink-soft);
+  }
+  .requisitos{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px}
+  .requisitos li{display:flex; gap:10px; align-items:flex-start; font-size:14.5px; color:var(--ink-soft)}
+  .requisitos li .mk{
+    flex:0 0 auto; width:18px; height:18px; border-radius:50%; border:1.5px solid var(--line); margin-top:2px;
+    display:grid; place-items:center; font-size:10px; font-family:"Archivo",sans-serif; color:var(--ink-soft);
+  }
+  .requisitos li[data-ok="si"]{color:var(--ink)}
+  .requisitos li[data-ok="si"] .mk{background:var(--ok); border-color:var(--ok); color:var(--surface)}
+  .requisitos li[data-ok="no"] .mk{border-color:var(--bad); color:var(--bad)}
+  .requisitos li[data-ok="casi"] .mk{border-color:var(--accent); color:var(--accent); border-style:dashed}
+
+  .pista{
+    border:1px solid var(--warn); background:var(--warn-soft); color:var(--ink);
+    padding:11px 13px; font-size:14px; border-radius:4px;
+  }
+
+  /* ---------- editor ---------- */
+  .editor-wrap{display:flex; flex-direction:column; border:1px solid var(--line); border-radius:5px; overflow:hidden; background:var(--surface-2)}
+  .editor-bar{
+    display:flex; justify-content:space-between; align-items:center; gap:10px; padding:8px 11px;
+    background:var(--surface); border-bottom:1px solid var(--line-suave);
+    font-family:"Archivo",sans-serif; font-size:11px; letter-spacing:.06em; color:var(--ink-soft);
+  }
+  .semaforo{display:flex; align-items:center; gap:7px; font-weight:600; letter-spacing:.02em; text-transform:none; font-size:12px}
+  .semaforo i{width:9px; height:9px; border-radius:50%; background:var(--line); display:inline-block; flex:0 0 auto}
+  .semaforo[data-estado="ok"]{color:var(--ok)} .semaforo[data-estado="ok"] i{background:var(--ok)}
+  .semaforo[data-estado="mal"]{color:var(--bad)} .semaforo[data-estado="mal"] i{background:var(--bad)}
+  .semaforo[data-estado="vacio"]{color:var(--ink-soft)}
+
+  .simbolos{display:flex; gap:5px; padding:7px 9px; background:var(--surface); border-bottom:1px solid var(--line-suave); overflow-x:auto}
+  .simbolos button{
+    flex:0 0 auto; border:1px solid var(--line); background:var(--surface-2); color:var(--ink);
+    font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:700; padding:5px 10px; border-radius:4px;
+  }
+  .simbolos button:hover{border-color:var(--accent); color:var(--accent)}
+  textarea#editor{
+    width:100%; min-height:280px; resize:vertical; border:0; outline:0; padding:14px;
+    background:transparent; color:var(--ink); font-size:13.5px; line-height:1.75; tab-size:2; white-space:pre; overflow:auto;
+  }
+  textarea#editor:focus-visible{box-shadow:inset 0 0 0 2px var(--accent)}
+
+  .veredicto{border-radius:5px; padding:13px 15px; font-size:14.5px; display:none; gap:10px; flex-direction:column}
+  .veredicto[data-tipo]{display:flex}
+  .veredicto[data-tipo="ok"]{background:var(--ok-soft); border:1px solid var(--ok)}
+  .veredicto[data-tipo="mal"]{background:var(--bad-soft); border:1px solid var(--bad)}
+  .veredicto .titulo{font-family:"Archivo",sans-serif; font-weight:600; font-size:13px; letter-spacing:.03em; text-transform:uppercase}
+  .veredicto .crudo{font-size:12px; color:var(--ink-soft); word-break:break-word}
+  .senal{
+    background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:9px 11px;
+    font-family:"JetBrains Mono",monospace; font-size:12.5px; line-height:1.5; white-space:pre; overflow-x:auto; color:var(--ink);
+  }
+  .senal .cursor{color:var(--bad); font-weight:700}
+
+  /* ---------- acciones ---------- */
+  .accion{display:flex; flex-direction:column; gap:10px}
+  .btn-primario{
+    width:100%; padding:15px 18px; border:1px solid var(--accent); background:var(--accent); color:var(--btn-text);
+    font-size:16px; font-weight:600; border-radius:5px; letter-spacing:.01em;
+  }
+  .btn-primario:hover{background:var(--accent-fuerte); border-color:var(--accent-fuerte)}
+  .btn-primario.avanzar{background:var(--ok); border-color:var(--ok); color:var(--surface)}
+  .secundarias{display:flex; flex-wrap:wrap; gap:8px 18px; justify-content:center}
+  .enlace{
+    background:none; border:0; padding:4px 2px; color:var(--ink-soft); font-size:13.5px; font-weight:500;
+    text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line);
+  }
+  .enlace:hover{color:var(--accent); text-decoration-color:var(--accent)}
+  button{font-family:"Archivo",sans-serif; cursor:pointer; border-radius:4px; font-size:13.5px; font-weight:600}
+  .btn{padding:9px 15px; border:1px solid var(--line); background:transparent; color:var(--ink)}
+  .btn:hover{border-color:var(--accent); color:var(--accent)}
+  button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  /* ---------- lineas (modo detecta) ---------- */
+  ol.lineas{list-style:none; counter-reset:l; margin:0; padding:0; border:1px solid var(--line); border-radius:5px; overflow:hidden; background:var(--surface-2)}
+  ol.lineas li{counter-increment:l; display:flex; align-items:stretch; border-bottom:1px solid var(--line-suave)}
+  ol.lineas li:last-child{border-bottom:0}
+  ol.lineas button.linea{
+    all:unset; box-sizing:border-box; display:flex; gap:12px; width:100%; cursor:pointer; padding:8px 12px;
+    font-family:"JetBrains Mono",monospace; font-size:13px; line-height:1.6; white-space:pre; overflow-x:auto;
+  }
+  ol.lineas button.linea::before{
+    content:counter(l); color:var(--ink-soft); min-width:1.6em; text-align:right; font-size:11px; flex:0 0 auto; padding-top:2px;
+  }
+  ol.lineas button.linea:hover{background:var(--accent-soft)}
+  ol.lineas li[data-pick="mal"] button.linea{background:var(--bad-soft)}
+  ol.lineas li[data-pick="bien"] button.linea{background:var(--ok-soft)}
+  ol.lineas button.linea:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+
+  /* ---------- vistas previas ---------- */
+  .vista-caja{border:1px solid var(--line); border-radius:5px; overflow:hidden}
+  .vista-caja .vista-hd{
+    padding:8px 11px; background:var(--surface-2); border-bottom:1px solid var(--line-suave);
+    font-family:"Archivo",sans-serif; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-soft);
+    display:flex; justify-content:space-between; gap:10px;
+  }
+  .vista-caja iframe{display:block; width:100%; height:120px; border:0; background:#fff; color-scheme:light}
+  .vista-caja .vista-nota{padding:7px 11px; font-size:12.5px; color:var(--warn); background:var(--warn-soft); border-top:1px solid var(--line-suave)}
+
+
+  /* ---------- temario ---------- */
+  .temario{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px}
+  .temario li{display:flex}
+  .temario button{
+    all:unset; box-sizing:border-box; display:flex; gap:11px; align-items:flex-start; width:100%;
+    padding:10px 11px; border-radius:5px; cursor:pointer; font-family:"Source Serif 4",Georgia,serif; font-size:14.5px;
+    border:1px solid transparent;
+  }
+  .temario button:hover{background:var(--surface-2)}
+  .temario button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+  .temario li[aria-current="true"] button{background:var(--accent-soft); border-color:var(--accent)}
+  .temario .num{
+    flex:0 0 auto; width:22px; height:22px; border-radius:50%; border:1.5px solid var(--line);
+    display:grid; place-items:center; font-family:"Archivo",sans-serif; font-size:11px; font-weight:700; color:var(--ink-soft);
+  }
+  .temario li[data-visto="si"] .num{background:var(--ok); border-color:var(--ok); color:var(--surface)}
+  .temario .tt{display:flex; flex-direction:column; gap:2px}
+  .temario .tt b{font-family:"Archivo",sans-serif; font-weight:600; font-size:14px}
+  .temario .tt span{font-size:12.5px; color:var(--ink-soft)}
+
+  .leccion{display:flex; flex-direction:column; gap:15px; font-size:16px; line-height:1.62}
+  .leccion p{max-width:62ch}
+  .leccion .ejemplo{
+    background:var(--surface-2); border:1px solid var(--line); border-radius:5px; padding:13px 14px; margin:0;
+    font-family:"JetBrains Mono",monospace; font-size:13px; line-height:1.8; white-space:pre; overflow-x:auto; color:var(--ink);
+  }
+  .leccion .ejemplo-tit{
+    font-family:"Archivo",sans-serif; font-size:10.5px; font-weight:600; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--ink-soft); margin-bottom:7px;
+  }
+  .leccion .fijate{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px}
+  .leccion .fijate li{display:flex; gap:10px; font-size:14.5px; align-items:flex-start}
+  .leccion .fijate li::before{
+    content:"→"; color:var(--accent); font-family:"Archivo",sans-serif; font-weight:700; flex:0 0 auto;
+  }
+  .leccion .ojo{
+    border:1px solid var(--warn); background:var(--warn-soft); border-radius:5px; padding:11px 13px; font-size:14.5px;
+  }
+  .leccion .ojo b{font-family:"Archivo",sans-serif; font-weight:600}
+
+  /* ---------- criterios y chuletas ---------- */
+  .abajo{display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:16px}
+  .criterios{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px}
+  .criterio .ct{display:flex; justify-content:space-between; gap:12px; align-items:baseline; margin-bottom:6px}
+  .criterio .ct .q{font-family:"Archivo",sans-serif; font-weight:600; font-size:13.5px}
+  .criterio .ct .v{font-family:"Archivo",sans-serif; font-size:11.5px; color:var(--ink-soft); font-variant-numeric:tabular-nums; white-space:nowrap}
+  .criterio .pista-txt{font-size:13px; color:var(--ink-soft); margin-top:5px}
+  .medidor{height:7px; border-radius:4px; background:var(--surface-2); border:1px solid var(--line-suave); overflow:hidden}
+  .medidor span{
+    display:block; height:100%; width:100%; background:var(--accent);
+    transform:scaleX(0); transform-origin:left center; transition:transform .3s ease;
+  }
+  .criterio[data-listo="si"] .medidor span{background:var(--ok)}
+  .criterio[data-listo="si"] .ct .v{color:var(--ok)}
+  .veredicto-listo{
+    font-family:"Archivo",sans-serif; font-size:13px; font-weight:600; padding:11px 13px; border-radius:4px;
+    background:var(--surface-2); border:1px solid var(--line); color:var(--ink-soft);
+  }
+  .veredicto-listo[data-listo="si"]{background:var(--ok-soft); border-color:var(--ok); color:var(--ink)}
+
+  .lista-reglas{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
+  .lista-reglas li{padding:11px 0; border-bottom:1px dashed var(--line-suave); font-size:14.5px}
+  .lista-reglas li:last-child{border-bottom:0}
+  .lista-reglas .r{font-family:"Archivo",sans-serif; font-weight:600; font-size:13px; display:block; margin-bottom:3px}
+  .lista-reglas code{background:var(--surface-2); padding:1px 5px; border-radius:3px; font-size:12.5px; border:1px solid var(--line-suave)}
+  .mal{color:var(--bad)} .bien{color:var(--ok)}
+
+  .estrategia{display:flex; flex-direction:column; gap:13px}
+  .paso{display:flex; gap:12px; align-items:flex-start}
+  .paso .n{
+    font-family:"Archivo",sans-serif; font-weight:800; font-size:11.5px; color:var(--accent);
+    border:1px solid var(--accent); border-radius:4px; padding:2px 7px; flex:0 0 auto; font-variant-numeric:tabular-nums;
+  }
+  .paso .t{font-size:14.5px}
+  .paso .t b{font-family:"Archivo",sans-serif; font-weight:600}
+
+  footer.pie{color:var(--ink-soft); font-size:13px; text-align:center; border-top:1px solid var(--line-suave); padding-top:16px}
+  .sync{font-family:"Archivo",sans-serif; font-size:11px; color:var(--ink-soft); letter-spacing:.05em}
+  button.sync{background:none; border:0; padding:2px 0; text-decoration:underline; text-underline-offset:3px; text-decoration-color:var(--line); font-weight:500}
+  button.sync:hover{color:var(--accent); text-decoration-color:var(--accent)}
+
+  /* ---------- personas ---------- */
+  .perfil-caja{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radio);
+    padding:14px 16px; display:flex; flex-direction:column; gap:12px; box-shadow:var(--shadow);
+  }
+  .perfil-caja p{font-size:14px; color:var(--ink-soft); max-width:64ch}
+  .perfil-form{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+  .perfil-form input{
+    flex:1 1 200px; min-width:0; padding:9px 11px; border:1px solid var(--line); border-radius:4px;
+    background:var(--surface-2); color:var(--ink); font-family:"Archivo",sans-serif; font-size:14px;
+  }
+  .perfil-form input:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+  .perfil-lista{display:flex; flex-wrap:wrap; gap:8px}
+  .perfil-lista button[aria-current="true"]{border-color:var(--accent); color:var(--accent)}
+  @media (prefers-reduced-motion: no-preference){
+    .veredicto[data-tipo]{animation:aparece .18s ease-out}
+    @keyframes aparece{from{opacity:.4; transform:translateY(-3px)} to{opacity:1; transform:none}}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .medidor span, .progreso-sesion span{transition:none}
+    .veredicto[data-tipo]{animation:none}
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <div class="eyebrow">SMR 1 &middot; Lenguajes de marcas</div>
+      <h1>Taller de CSS</h1>
+      <p class="lead">Escribes CSS y lo ves aplicado al momento. El revisor te dice que linea se saltaria el navegador y por que, y cada ejercicio se corrige mirando como pinta la pagina de verdad.</p>
+    </div>
+    <div class="chips">
+      <button class="chip chip-persona" id="chip-persona" type="button">
+        <span class="v" id="chip-persona-nombre">Yo</span><span class="k">practicando &middot; cambiar</span>
+      </button>
+      <div class="chip" data-tono="racha"><span class="v" id="chip-racha">0</span><span class="k">dias de racha</span></div>
+      <div class="chip"><span class="v"><span id="n-hechos">0</span>/<span id="n-total">0</span></span><span class="k">resueltos</span></div>
+      <div class="chip"><span class="v" id="n-limpios">0</span><span class="k">a la primera</span></div>
+      <div class="chip"><span class="v" id="n-nota">&ndash;</span><span class="k">mejor examen</span></div>
+    </div>
+  </header>
+
+  <section class="perfil-caja" id="perfil-caja" hidden>
+    <h2>&iquest;Quien esta practicando?</h2>
+    <p>Cada nombre lleva su propio progreso, separado del de los demas: sus ejercicios, su racha y sus notas. Todo se guarda <b>en este ordenador</b> y no se envia a ningun sitio, asi que nadie ve tu progreso desde otro equipo.</p>
+    <div class="perfil-lista" id="perfil-lista"></div>
+    <div class="perfil-form">
+      <input type="text" id="perfil-nuevo" maxlength="24" placeholder="Escribe un nombre y entra" aria-label="Nombre de quien practica">
+      <button class="btn" id="perfil-entrar" type="button">Entrar con este nombre</button>
+      <button class="enlace" id="perfil-cerrar" type="button">Cancelar</button>
+    </div>
+  </section>
+
+  <section class="guia" id="guia" hidden>
+    <h2>Como funciona esto</h2>
+    <ol>
+      <li>Si no has visto CSS nunca, empieza en <b>Aprender de cero</b>: trece lecciones cortas en orden, y al final de cada una practicas lo de esa leccion.</li>
+      <li>Cuando ya te suene todo, tu rutina diaria es <b>Sesion de hoy</b>: 15 minutos y la maquina elige que te toca.</li>
+      <li>En cada ejercicio, <b>escribe en el recuadro de la derecha</b>. El punto de color de arriba te dice en todo momento si el CSS esta bien escrito, debajo ves tu pagina en vivo, y la lista de la izquierda se va marcando sola.</li>
+      <li>Cuando lo tengas, pulsa el <b>boton verde grande</b>. Si te atascas, tienes <i>Ver pista</i> debajo.</li>
+    </ol>
+    <button class="btn cerrar" id="cerrar-guia" type="button">Entendido, empezar</button>
+  </section>
+
+  <nav class="modos" aria-label="Modo de trabajo">
+    <button type="button" id="m-aprender" aria-pressed="true">Aprender de cero<span class="sub">el temario explicado</span></button>
+    <button type="button" id="m-hoy" aria-pressed="false">Sesion de hoy<span class="sub" id="sub-hoy">15 minutos</span></button>
+    <button type="button" id="m-practica" aria-pressed="false">Practicar<span class="sub" id="sub-practica">ejercicios guiados</span></button>
+    <button type="button" id="m-examen" aria-pressed="false">Examen<span class="sub">6 al azar con nota</span></button>
+    <button type="button" id="m-banco" aria-pressed="false">Mi pagina<span class="sub">revisa tu practica</span></button>
+  </nav>
+  <p class="ayuda-modo" id="ayuda-modo"></p>
+
+  <section class="barra" id="barra-hoy" hidden>
+    <div class="grupo">
+      <div class="dato"><span class="k">Sesion</span><span class="v" id="hoy-n">0/6</span></div>
+      <div class="dato"><span class="k">Tiempo</span><span class="v" id="hoy-t">00:00</span></div>
+      <div class="dato"><span class="k">Toca repasar</span><span class="v" id="hoy-vencidos">0</span></div>
+      <div class="dato" hidden><span class="k">Racha</span><span class="v" id="hoy-racha">0</span></div>
+    </div>
+    <div class="progreso-sesion"><span id="hoy-progreso"></span></div>
+    <button class="btn" id="hoy-saltar" type="button">Saltar este</button>
+  </section>
+
+  <section class="barra" id="barra-examen" hidden>
+    <div class="grupo">
+      <div class="dato"><span class="k">Pregunta</span><span class="v" id="ex-n">1/6</span></div>
+      <div class="dato"><span class="k">Tiempo</span><span class="v" id="ex-t">00:00</span></div>
+      <div class="dato"><span class="k">Nota parcial</span><span class="v" id="ex-p">0,0</span></div>
+    </div>
+    <button class="btn" id="ex-abandonar" type="button">Abandonar examen</button>
+  </section>
+
+  <section class="mapa-caja" id="mapa-caja">
+    <div class="mapa" id="mapa" aria-label="Bloques de ejercicios"></div>
+    <div class="leyenda">
+      <span><i class="ok"></i> resuelto</span>
+      <span><i class="pend"></i> empezado, sin acertar</span>
+      <span><i></i> sin tocar</span>
+      <span>Pulsa cualquier cuadrito para ir a ese ejercicio.</span>
+    </div>
+  </section>
+
+  <section class="taller" id="vista-aprender" hidden>
+    <div class="card">
+      <div class="hd">
+        <span class="paso-n">Temario &middot; de lo mas basico a lo mas dificil</span>
+        <span class="tag" id="temario-progreso">0/13</span>
+      </div>
+      <div class="bd">
+        <ul class="temario" id="temario"></ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hd">
+        <span class="paso-n" id="leccion-n">Leccion 1</span>
+        <span class="sync">no hay que memorizar nada, se aprende usandolo</span>
+      </div>
+      <div class="bd">
+        <h2 id="leccion-titulo">&nbsp;</h2>
+        <div class="leccion" id="leccion-cuerpo"></div>
+        <div class="accion">
+          <button class="btn-primario" id="leccion-practicar" type="button">Practicar esto ahora</button>
+          <div class="secundarias">
+            <button class="enlace" id="leccion-anterior" type="button">Leccion anterior</button>
+            <button class="enlace" id="leccion-siguiente" type="button">Saltar a la siguiente leccion</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="taller" id="vista-taller">
+    <div class="card" id="card-enunciado">
+      <div class="hd">
+        <span class="paso-n" id="paso-1">Paso 1 &middot; Lee</span>
+        <span class="tag" id="tipo-ej">&nbsp;</span>
+      </div>
+      <div class="bd">
+        <h2 id="titulo-ej">Cargando</h2>
+        <p class="enunciado" id="enunciado"></p>
+        <div id="caja-modelo" hidden>
+          <div class="ejemplo-tit" id="modelo-tit">Modelo &middot; copialo tecleando, no con el raton</div>
+          <pre class="ejemplo" id="modelo"></pre>
+        </div>
+        <div id="caja-requisitos">
+          <div class="rotulo" style="margin-bottom:8px">Tiene que cumplir</div>
+          <ul class="requisitos" id="requisitos"></ul>
+        </div>
+        <div class="vista-caja" id="caja-objetivo" hidden>
+          <div class="vista-hd"><span>Asi tiene que quedar</span></div>
+          <iframe id="vista-objetivo" title="Como tiene que quedar la pagina" tabindex="-1"></iframe>
+        </div>
+        <div class="pista" id="pista" hidden></div>
+        <div class="secundarias" id="botonera-ayuda" style="justify-content:flex-start">
+          <button class="enlace" id="btn-pista" type="button">Ver pista</button>
+          <button class="enlace" id="btn-solucion" type="button">Ver solucion</button>
+          <button class="enlace" id="btn-repaso" type="button">Repasar lo pendiente</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hd">
+        <span class="paso-n" id="paso-2">Paso 2 &middot; Escribe</span>
+        <button class="sync" id="sync" type="button" title="Cambiar de persona">progreso de: ...</button>
+      </div>
+      <div class="bd">
+        <div id="zona-editor" class="editor-wrap">
+          <div class="editor-bar">
+            <span class="semaforo" id="semaforo" data-estado="vacio"><i></i><span id="semaforo-txt">Escribe algo</span></span>
+            <span id="pos">linea 1</span>
+          </div>
+          <div class="simbolos" id="simbolos" aria-label="Insertar simbolos"></div>
+          <textarea id="editor" spellcheck="false" autocapitalize="off" autocorrect="off" aria-label="Editor de CSS"></textarea>
+          <div class="editor-bar" style="border-bottom:0; border-top:1px solid var(--line-suave)">
+            <span id="nombre-fichero">estilos.css</span>
+            <span id="cab-trabajo">Tu CSS</span>
+          </div>
+        </div>
+        <ol class="lineas" id="zona-lineas" hidden></ol>
+
+        <div class="veredicto" id="veredicto"></div>
+
+        <div class="vista-caja" id="caja-vista" hidden>
+          <div class="vista-hd"><span>Asi se ve tu pagina</span><span id="vista-resumen"></span></div>
+          <iframe id="vista-tu" title="Vista previa de tu pagina"></iframe>
+          <div class="vista-nota" id="vista-nota" hidden>Hay un error: el navegador se ha saltado esa parte y pinta el resto.</div>
+        </div>
+
+        <div class="accion">
+          <button class="btn-primario" id="btn-comprobar" type="button">Comprobar mi CSS</button>
+          <button class="btn-primario avanzar" id="btn-siguiente" type="button" hidden>Siguiente ejercicio</button>
+          <div class="secundarias">
+            <button class="enlace" id="btn-reset" type="button">Empezar este de cero</button>
+            <button class="enlace" id="btn-saltar" type="button">Saltar al siguiente</button>
+            <button class="enlace" id="btn-descargar" type="button" hidden>Descargar .html</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="abajo">
+    <div class="card">
+      <div class="hd"><h2>&iquest;Estoy listo para el 10?</h2></div>
+      <div class="bd">
+        <p style="font-size:14.5px; color:var(--ink-soft)">Cuatro condiciones medibles. Cuando las cuatro esten en verde, el dia del examen no habra nada de CSS basico que no hayas hecho ya varias veces y con el reloj corriendo.</p>
+        <ul class="criterios" id="criterios"></ul>
+        <div class="veredicto-listo" id="veredicto-listo">Empieza por la sesion de hoy.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hd"><h2>Las 8 cosas que rompen un CSS</h2></div>
+      <div class="bd">
+        <ul class="lista-reglas">
+          <li><span class="r">1. Forma de la regla</span><code>selector { propiedad: valor; }</code> Dos puntos, nunca <code>=</code>.</li>
+          <li><span class="r">2. Punto y coma al final</span>Sin el, esa declaracion y la siguiente se pierden juntas.</li>
+          <li><span class="r">3. Cada { con su }</span>Una llave sin cerrar se come las reglas de debajo.</li>
+          <li><span class="r">4. Unidad pegada al numero</span><span class="bien">bien</span> <code>20px</code> &middot; <span class="mal">mal</span> <code>20 px</code> o <code>20</code>. Solo el 0 va sin unidad.</li>
+          <li><span class="r">5. Todo en ingles</span><code>color: gray;</code> <code>text-align: center;</code> Ni <code>gris</code> ni <code>centre</code>.</li>
+          <li><span class="r">6. Clase con punto, id con #</span><code>.aviso</code> <code>#portada</code>. Nunca empiezan por numero.</li>
+          <li><span class="r">7. Hex de 3 o 6 cifras</span><code>#f60</code> <code>#ff6600</code>. Decimales con punto: <code>0.5</code>.</li>
+          <li><span class="r">8. link con href</span><code>&lt;link rel="stylesheet" href="estilos.css"&gt;</code> dentro del head.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hd"><h2>Examen en ordenador: rutina del dia</h2></div>
+      <div class="bd estrategia">
+        <div class="paso"><span class="n">01</span><div class="t"><b>Escribe las llaves antes que el contenido.</b> Tecleas <code>h1 { }</code>, Enter en medio, y rellenas. Asi es imposible dejarse una llave abierta.</div></div>
+        <div class="paso"><span class="n">02</span><div class="t"><b>Una declaracion por linea, sangrada.</b> Un punto y coma olvidado se ve a simple vista cuando todas las lineas acaban igual.</div></div>
+        <div class="paso"><span class="n">03</span><div class="t"><b>Guarda y recarga el navegador cada poco.</b> F5 despues de cada regla. Si algo no cambia, el fallo esta en lo ultimo que has escrito.</div></div>
+        <div class="paso"><span class="n">04</span><div class="t"><b>Si algo no se aplica, Inspeccionar.</b> Clic derecho sobre el elemento. Lo que el navegador no entiende sale tachado o con un triangulo amarillo.</div></div>
+        <div class="paso"><span class="n">05</span><div class="t"><b>Mira que la clase se llama igual en los dos sitios.</b> <code>class="aviso"</code> en el HTML y <code>.aviso</code> en el CSS, con las mismas mayusculas.</div></div>
+        <div class="paso"><span class="n">06</span><div class="t"><b>Comprueba el href del link.</b> Si el CSS no se aplica nada, casi siempre es la ruta o el nombre del fichero.</div></div>
+        <div class="paso"><span class="n">07</span><div class="t"><b>Reparte el tiempo antes de teclear.</b> Lee el enunciado entero, cuenta los apartados y deja los dos ultimos minutos para releerlo frase a frase contra tu pagina.</div></div>
+        <div class="paso"><span class="n">08</span><div class="t"><b>Apunta lo que diga el profesor de palabra.</b> Nombre de los ficheros, si quiere el CSS aparte, si pide comentario con tu nombre. Eso no lo ve ningun revisor.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="pie">Modulo de Lenguajes de Marcas &middot; CSS &middot; SMR 1 &middot; EFA Moratalaz, Manzanares</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- ayudantes para comprobar lo que pinta el navegador ----------
+  var SONDA = null;
+  function colorRGB(c){
+    if(!SONDA){ SONDA = document.createElement("span"); SONDA.style.display = "none"; document.body.appendChild(SONDA); }
+    SONDA.style.color = "";
+    SONDA.style.color = c;
+    if(!SONDA.style.color) return null;
+    return getComputedStyle(SONDA).color;
+  }
+  function nodo(d, sel){ try{ return d.querySelector(sel); }catch(e){ return null; } }
+  function cs(d, sel, prop){
+    var n = nodo(d, sel);
+    return n ? d.defaultView.getComputedStyle(n).getPropertyValue(prop).trim() : null;
+  }
+  function esColor(d, sel, prop, c){ var v = cs(d, sel, prop); return v !== null && v === colorRGB(c); }
+  function esPx(d, sel, prop, n){ var v = cs(d, sel, prop); return v !== null && Math.abs(parseFloat(v) - n) < 0.6; }
+  function normSel(t){ return String(t).replace(/\s+/g," ").replace(/\s*([>,+~])\s*/g,"$1").trim().toLowerCase(); }
+  // Estilo de la ultima regla escrita con ese selector exacto (tambien dentro de @media).
+  function regla(d, selector){
+    var obj = normSel(selector), hallado = null;
+    function recorrer(lista){
+      var i, r;
+      for(i=0;i<lista.length;i++){
+        r = lista[i];
+        if(r.selectorText && normSel(r.selectorText) === obj) hallado = r.style;
+        else if(r.cssRules) recorrer(r.cssRules);
+      }
+    }
+    try{ for(var k=0;k<d.styleSheets.length;k++){ recorrer(d.styleSheets[k].cssRules); } }catch(e){}
+    return hallado;
+  }
+  function sinComentarios(s){ return String(s).replace(/\/\*[\s\S]*?\*\//g,""); }
+
+  // Paginas de ejemplo sobre las que se escribe el CSS
+  var H_BAR = '<h1>Bar Manzanares</h1>\n<p>Tapas caseras todos los dias.</p>';
+  var H_AVISOS = '<h1>Avisos del instituto</h1>\n<p>Horario normal de clases.</p>\n<p class="aviso">Manana no hay clase de redes.</p>\n<p>La biblioteca abre a las 9.</p>';
+  var H_MENU = '<nav>\n  <a href="#">Inicio</a>\n  <a href="#">Carta</a>\n  <a href="#">Contacto</a>\n</nav>\n<p>Lee las <a href="#">condiciones</a> antes de reservar.</p>';
+  var H_CAJA = '<div class="caja">Soy una caja con un poco de texto dentro.</div>';
+  var H_TARJETA = '<div class="tarjeta">\n  <h2>Raton inalambrico</h2>\n  <p>Sensor optico, 3 botones.</p>\n  <p class="precio">19,90 EUR</p>\n</div>';
+  var PAGINA = function(cabeza, cuerpo){
+    return '<!DOCTYPE html>\n<html lang="es">\n<head>\n  <meta charset="UTF-8">\n  <title>Mi pagina</title>\n' + cabeza + '</head>\n<body>\n' + cuerpo + '</body>\n</html>';
+  };
+
+  var EJERCICIOS = [
+    { id:"b0e1", bloque:"0. Escribir paso a paso", tipo:"editor",
+      titulo:"Tu primera regla",
+      enunciado:"Copia en el recuadro de la derecha exactamente lo que ves en el modelo. Escribelo a mano, no lo pegues: lo que se entrena aqui son los dedos.",
+      html:'<h1>Hola</h1>',
+      modelo:'h1 {\n  color: red;\n}',
+      pista:"En el teclado espaniol la llave { es AltGr mas la tecla de la tilde (a la derecha de la enie), y la } es AltGr mas la tecla de la cedilla. Los dos puntos, Mayusculas mas el punto.",
+      inicio:"",
+      solucion:'h1 {\n  color: red;\n}',
+      checks:[
+        {msg:"El titulo h1 sale de color rojo", test:function(d){ return esColor(d,"h1","color","red"); }},
+        {msg:"La declaracion acaba en punto y coma", test:function(d,s){ return /color\s*:\s*red\s*;/.test(s); }}
+      ]
+    },
+    { id:"b0e2", bloque:"0. Escribir paso a paso", tipo:"editor",
+      titulo:"Dos declaraciones",
+      enunciado:"Copia el modelo. Ahora la regla lleva dos lineas dentro: cada una es una declaracion y cada una acaba en su punto y coma.",
+      html:'<h1>Hola</h1>',
+      modelo:'h1 {\n  color: blue;\n  font-size: 40px;\n}',
+      pista:"Escribe primero h1 { } con las llaves, pon el cursor en medio, dale a Enter y escribe una declaracion por linea.",
+      inicio:"",
+      solucion:'h1 {\n  color: blue;\n  font-size: 40px;\n}',
+      checks:[
+        {msg:"El h1 es azul", test:function(d){ return esColor(d,"h1","color","blue"); }},
+        {msg:"El h1 mide 40px", test:function(d){ return esPx(d,"h1","font-size",40); }}
+      ]
+    },
+    { id:"b0e3", bloque:"0. Escribir paso a paso", tipo:"editor",
+      titulo:"Dos reglas",
+      enunciado:"Copia el modelo. Son dos reglas separadas: una para el titulo y otra para el parrafo. Cada una con sus propias llaves.",
+      html:H_BAR,
+      modelo:'h1 {\n  color: green;\n}\n\np {\n  color: gray;\n}',
+      pista:"Cierra la primera regla con } antes de empezar la segunda. La linea en blanco entre las dos no es obligatoria, pero se lee mejor.",
+      inicio:"",
+      solucion:'h1 {\n  color: green;\n}\n\np {\n  color: gray;\n}',
+      checks:[
+        {msg:"El h1 es verde (green)", test:function(d){ return esColor(d,"h1","color","green"); }},
+        {msg:"El parrafo es gris (gray)", test:function(d){ return esColor(d,"p","color","gray"); }}
+      ]
+    },
+    { id:"b0e4", bloque:"0. Escribir paso a paso", tipo:"editor",
+      titulo:"Mismo molde, otra etiqueta",
+      enunciado:"Ya no copias: usa el modelo como molde, pero para el parrafo p. Ponle color purple y font-size de 20px.",
+      html:H_BAR,
+      modelo:'h1 {\n  color: blue;\n  font-size: 40px;\n}',
+      pista:"La estructura es identica: cambia h1 por p, blue por purple y 40px por 20px.",
+      inicio:"",
+      solucion:'p {\n  color: purple;\n  font-size: 20px;\n}',
+      checks:[
+        {msg:"El parrafo es morado (purple)", test:function(d){ return esColor(d,"p","color","purple"); }},
+        {msg:"El parrafo mide 20px", test:function(d){ return esPx(d,"p","font-size",20); }},
+        {msg:"El titulo no se ha tocado", test:function(d){ return esColor(d,"h1","color","black"); }}
+      ]
+    },
+    { id:"b0e5", bloque:"0. Escribir paso a paso", tipo:"editor",
+      titulo:"Rellena el hueco",
+      enunciado:"El recuadro ya tiene dos reglas empezadas. Dentro de la regla del h1, que esta vacia, pon color navy y text-align center.",
+      html:H_BAR,
+      pista:"Escribe cada declaracion en su linea, sangrada con dos espacios, entre las llaves que ya estan puestas.",
+      inicio:'body {\n  background-color: lightyellow;\n}\n\nh1 {\n  \n}',
+      solucion:'body {\n  background-color: lightyellow;\n}\n\nh1 {\n  color: navy;\n  text-align: center;\n}',
+      checks:[
+        {msg:"El fondo sigue siendo lightyellow", test:function(d){ return esColor(d,"body","background-color","lightyellow"); }},
+        {msg:"El h1 es azul marino (navy)", test:function(d){ return esColor(d,"h1","color","navy"); }},
+        {msg:"El h1 esta centrado", test:function(d){ return cs(d,"h1","text-align") === "center"; }}
+      ]
+    },
+    { id:"b0e6", bloque:"0. Escribir paso a paso", tipo:"editor",
+      titulo:"Ahora sin red",
+      enunciado:"Recuadro vacio y sin modelo. Haz que el h1 sea darkred y que el parrafo tenga font-size de 18px.",
+      html:H_BAR,
+      pista:"Dos reglas: una empieza por h1 y la otra por p. Mira la lista de la izquierda: se va marcando sola.",
+      inicio:"",
+      solucion:'h1 {\n  color: darkred;\n}\n\np {\n  font-size: 18px;\n}',
+      checks:[
+        {msg:"El h1 es darkred", test:function(d){ return esColor(d,"h1","color","darkred"); }},
+        {msg:"El parrafo mide 18px", test:function(d){ return esPx(d,"p","font-size",18); }}
+      ]
+    },
+
+    { id:"b1e1", bloque:"1. Reglas y selectores", tipo:"editor",
+      titulo:"El punto y coma olvidado",
+      enunciado:"Este CSS no hace lo que deberia: el parrafo tendria que ser azul y de 20px, y no sale ninguna de las dos cosas. Arreglalo.",
+      html:H_BAR,
+      pista:"Mira el final de cada linea de dentro de la regla. A una le falta algo.",
+      inicio:'p {\n  color: blue\n  font-size: 20px;\n}',
+      solucion:'p {\n  color: blue;\n  font-size: 20px;\n}',
+      checks:[
+        {msg:"El parrafo es azul", test:function(d){ return esColor(d,"p","color","blue"); }},
+        {msg:"El parrafo mide 20px", test:function(d){ return esPx(d,"p","font-size",20); }}
+      ]
+    },
+    { id:"b1e2", bloque:"1. Reglas y selectores", tipo:"editor",
+      titulo:"La llave que falta",
+      enunciado:"Aqui el h1 tendria que ser navy y el parrafo gray, pero el parrafo no cambia. Arreglalo sin tocar los colores.",
+      html:H_BAR,
+      pista:"Cuenta las llaves: tiene que haber tantas { como }.",
+      inicio:'h1 {\n  color: navy;\n\np {\n  color: gray;\n}',
+      solucion:'h1 {\n  color: navy;\n}\n\np {\n  color: gray;\n}',
+      checks:[
+        {msg:"El h1 es navy", test:function(d){ return esColor(d,"h1","color","navy"); }},
+        {msg:"El parrafo es gray", test:function(d){ return esColor(d,"p","color","gray"); }}
+      ]
+    },
+    { id:"b1e3", bloque:"1. Reglas y selectores", tipo:"detecta",
+      titulo:"Caza el igual",
+      enunciado:"Una sola linea esta mal escrita. Pulsa sobre ella.",
+      lineas:['h1 {','  color: navy;','  font-size: 32px;','}','p {','  color = gray;','}'],
+      mala:5,
+      explicacion:"En CSS la propiedad y el valor se separan con dos puntos, nunca con un igual: color: gray; El navegador se salta la linea entera y el parrafo se queda negro."
+    },
+    { id:"b1e4", bloque:"1. Reglas y selectores", tipo:"editor",
+      titulo:"Selector de clase",
+      enunciado:"Solo el parrafo que tiene class=\"aviso\" tiene que salir en rojo (red) y en negrita (font-weight: bold). Los otros parrafos se quedan como estan.",
+      html:H_AVISOS,
+      pista:"Una clase se selecciona con un punto delante del nombre: .aviso { ... }",
+      inicio:"",
+      solucion:'.aviso {\n  color: red;\n  font-weight: bold;\n}',
+      checks:[
+        {msg:"El aviso sale rojo", test:function(d){ return esColor(d,"p.aviso","color","red"); }},
+        {msg:"El aviso sale en negrita", test:function(d){ return parseInt(cs(d,"p.aviso","font-weight"),10) >= 700; }},
+        {msg:"Los demas parrafos siguen en negro", test:function(d){ return esColor(d,"p:not(.aviso)","color","black"); }},
+        {msg:"Usas el selector de clase .aviso", test:function(d){ return !!regla(d,".aviso") || !!regla(d,"p.aviso"); }}
+      ]
+    },
+    { id:"b1e5", bloque:"1. Reglas y selectores", tipo:"editor",
+      titulo:"Selector de id",
+      enunciado:"El titulo tiene id=\"portada\". Usa ese id para ponerle fondo amarillo (background-color: yellow).",
+      html:'<h1 id="portada">Semana cultural</h1>\n<h2>Programa</h2>\n<p>Del 3 al 7 de noviembre.</p>',
+      pista:"Un id se selecciona con la almohadilla delante: #portada { ... }. La almohadilla esta en el 3, con AltGr.",
+      inicio:"",
+      solucion:'#portada {\n  background-color: yellow;\n}',
+      checks:[
+        {msg:"El titulo tiene fondo amarillo", test:function(d){ return esColor(d,"#portada","background-color","yellow"); }},
+        {msg:"Usas el selector #portada", test:function(d){ return !!regla(d,"#portada") || !!regla(d,"h1#portada"); }},
+        {msg:"El h2 no tiene fondo amarillo", test:function(d){ return !esColor(d,"h2","background-color","yellow"); }}
+      ]
+    },
+    { id:"b1e6", bloque:"1. Reglas y selectores", tipo:"editor",
+      titulo:"Varios selectores a la vez",
+      enunciado:"Pon los tres titulos (h1, h2 y h3) de color teal usando UNA sola regla, no tres.",
+      html:'<h1>Redes locales</h1>\n<h2>Tema 1</h2>\n<h3>Cableado</h3>\n<p>Texto del tema.</p>',
+      pista:"Los selectores se separan con comas y comparten las llaves: h1, h2, h3 { ... }",
+      inicio:"",
+      solucion:'h1, h2, h3 {\n  color: teal;\n}',
+      checks:[
+        {msg:"h1, h2 y h3 salen teal", test:function(d){ return esColor(d,"h1","color","teal") && esColor(d,"h2","color","teal") && esColor(d,"h3","color","teal"); }},
+        {msg:"El parrafo sigue en negro", test:function(d){ return esColor(d,"p","color","black"); }},
+        {msg:"Esta hecho con una sola regla con comas", test:function(d,s){ return /h[1-3]\s*,\s*h[1-3]\s*,\s*h[1-3]\s*\{/.test(sinComentarios(s)); }}
+      ]
+    },
+    { id:"b1e7", bloque:"1. Reglas y selectores", tipo:"detecta",
+      titulo:"La clase imposible",
+      enunciado:"Una linea hace que su regla entera se ignore. Pulsala.",
+      lineas:['.tarjeta {','  color: black;','}','.1oferta {','  color: red;','}'],
+      mala:3,
+      explicacion:"Un nombre de clase no puede empezar por un numero: .1oferta no es un selector valido y el navegador tira la regla entera. Se escribe .oferta1 u .oferta-1 (y en el HTML igual)."
+    },
+    { id:"b1e8", bloque:"1. Reglas y selectores", tipo:"editor",
+      titulo:"Solo los enlaces del menu",
+      enunciado:"Los enlaces que estan dentro de nav tienen que salir en naranja (orange). El enlace del parrafo de abajo se queda azul.",
+      html:H_MENU,
+      pista:"Selector descendiente: primero el de fuera, un espacio, y despues el de dentro. nav a { ... }",
+      inicio:"",
+      solucion:'nav a {\n  color: orange;\n}',
+      checks:[
+        {msg:"Los enlaces del nav salen naranjas", test:function(d){ return esColor(d,"nav a","color","orange"); }},
+        {msg:"El enlace del parrafo no es naranja", test:function(d){ return !esColor(d,"p a","color","orange"); }}
+      ]
+    },
+    { id:"b1e9", bloque:"1. Reglas y selectores", tipo:"editor",
+      titulo:"Al pasar el raton",
+      enunciado:"Haz que los enlaces se pongan rojos (red) cuando pasas el raton por encima. Pasa el raton por la vista previa para verlo.",
+      html:H_MENU,
+      pista:"Es una pseudoclase: el selector, dos puntos pegados y hover. a:hover { ... }",
+      inicio:"",
+      solucion:'a:hover {\n  color: red;\n}',
+      checks:[
+        {msg:"Hay una regla a:hover", test:function(d){ return !!regla(d,"a:hover") || !!regla(d,"nav a:hover"); }},
+        {msg:"Esa regla pone el color en red", test:function(d){ var r = regla(d,"a:hover") || regla(d,"nav a:hover"); return !!r && r.color === "red"; }},
+        {msg:"Sin el raton encima siguen de su color", test:function(d){ return !esColor(d,"nav a","color","red"); }}
+      ]
+    },
+    { id:"b1e10", bloque:"1. Reglas y selectores", tipo:"editor",
+      titulo:"Quitar margenes a todo",
+      enunciado:"Con el selector universal, que coge todos los elementos de la pagina, pon margin: 0 a todo.",
+      html:H_BAR,
+      pista:"El selector universal es un asterisco: * { ... }",
+      inicio:"",
+      solucion:'* {\n  margin: 0;\n}',
+      checks:[
+        {msg:"El h1 ya no tiene margen", test:function(d){ return esPx(d,"h1","margin-top",0) && esPx(d,"h1","margin-bottom",0); }},
+        {msg:"El body tampoco", test:function(d){ return esPx(d,"body","margin-left",0); }},
+        {msg:"Usas el selector universal *", test:function(d){ return !!regla(d,"*"); }}
+      ]
+    },
+
+    { id:"b2e1", bloque:"2. Colores y texto", tipo:"editor",
+      titulo:"Color en hexadecimal",
+      enunciado:"Pon el h1 del color #ff6600 (un naranja) escrito en hexadecimal.",
+      html:H_BAR,
+      pista:"Almohadilla y seis cifras seguidas, sin espacios: color: #ff6600;",
+      inicio:"",
+      solucion:'h1 {\n  color: #ff6600;\n}',
+      checks:[
+        {msg:"El h1 sale #ff6600", test:function(d){ return esColor(d,"h1","color","#ff6600"); }},
+        {msg:"Esta escrito en hexadecimal", test:function(d,s){ return /#(ff6600|f60)\b/i.test(sinComentarios(s)); }}
+      ]
+    },
+    { id:"b2e2", bloque:"2. Colores y texto", tipo:"editor",
+      titulo:"Color con rgb()",
+      enunciado:"Pon al body un fondo rgb(230, 240, 255), un azul muy clarito, escrito con la funcion rgb().",
+      html:H_BAR,
+      pista:"rgb lleva tres numeros de 0 a 255: cuanto rojo, cuanto verde y cuanto azul. background-color: rgb(230, 240, 255);",
+      inicio:"",
+      solucion:'body {\n  background-color: rgb(230, 240, 255);\n}',
+      checks:[
+        {msg:"El fondo es rgb(230, 240, 255)", test:function(d){ return esColor(d,"body","background-color","rgb(230,240,255)"); }},
+        {msg:"Esta escrito con rgb()", test:function(d,s){ return /rgb\s*\(/i.test(sinComentarios(s)); }}
+      ]
+    },
+    { id:"b2e3", bloque:"2. Colores y texto", tipo:"editor",
+      titulo:"Transparencia con rgba()",
+      enunciado:"Pon a .caja un fondo negro al 50 % de transparencia con rgba(0, 0, 0, 0.5), y el texto blanco (white).",
+      html:H_CAJA,
+      pista:"rgba es rgb con un cuarto numero, la opacidad, de 0 (invisible) a 1 (opaco). 0.5 es la mitad. Ojo: decimal con punto, no con coma.",
+      inicio:"",
+      solucion:'.caja {\n  background-color: rgba(0, 0, 0, 0.5);\n  color: white;\n}',
+      checks:[
+        {msg:"El fondo es negro al 50 %", test:function(d){ return esColor(d,".caja","background-color","rgba(0,0,0,0.5)"); }},
+        {msg:"El texto es blanco", test:function(d){ return esColor(d,".caja","color","white"); }}
+      ]
+    },
+    { id:"b2e4", bloque:"2. Colores y texto", tipo:"detecta",
+      titulo:"El color que no existe",
+      enunciado:"Un color esta mal escrito y el navegador lo ignora. Pulsa su linea.",
+      lineas:['body {','  background-color: #fafafa;','  color: #333;','}','h1 {','  color: #12345;','}'],
+      mala:5,
+      explicacion:"Un color hexadecimal lleva 3 o 6 cifras despues de la almohadilla (tambien 4 u 8 con transparencia). #12345 tiene cinco: no es un color y la linea se ignora."
+    },
+    { id:"b2e5", bloque:"2. Colores y texto", tipo:"editor",
+      titulo:"Tipo de letra",
+      enunciado:"Pon a toda la pagina (body) la fuente Arial, con sans-serif de reserva. Y al h1 un tamanio de 32px.",
+      html:H_BAR,
+      pista:"font-family admite una lista separada por comas: la primera que tenga el ordenador es la que se usa. font-family: Arial, sans-serif;",
+      inicio:"",
+      solucion:'body {\n  font-family: Arial, sans-serif;\n}\n\nh1 {\n  font-size: 32px;\n}',
+      checks:[
+        {msg:"El body usa Arial", test:function(d){ return /^\s*"?arial"?\s*,/i.test(cs(d,"body","font-family") || ""); }},
+        {msg:"Con sans-serif de reserva", test:function(d){ return /sans-serif\s*$/i.test(cs(d,"body","font-family") || ""); }},
+        {msg:"El h1 mide 32px", test:function(d){ return esPx(d,"h1","font-size",32); }},
+        {msg:"El parrafo hereda Arial sin regla propia", test:function(d){ return /arial/i.test(cs(d,"p","font-family") || ""); }}
+      ]
+    },
+    { id:"b2e6", bloque:"2. Colores y texto", tipo:"editor",
+      titulo:"Alinear y transformar",
+      enunciado:"El h1: centrado (text-align) y todo en mayusculas (text-transform: uppercase). El parrafo: interlineado de 1.6 (line-height).",
+      html:H_BAR,
+      pista:"line-height puede ir sin unidad: 1.6 significa 1,6 veces el tamanio de la letra. Decimal con punto.",
+      inicio:"",
+      solucion:'h1 {\n  text-align: center;\n  text-transform: uppercase;\n}\n\np {\n  line-height: 1.6;\n}',
+      checks:[
+        {msg:"El h1 esta centrado", test:function(d){ return cs(d,"h1","text-align") === "center"; }},
+        {msg:"El h1 sale en mayusculas", test:function(d){ return cs(d,"h1","text-transform") === "uppercase"; }},
+        {msg:"El parrafo tiene line-height 1.6", test:function(d){ var r = regla(d,"p"); return !!r && r.lineHeight === "1.6"; }}
+      ]
+    },
+    { id:"b2e7", bloque:"2. Colores y texto", tipo:"editor",
+      titulo:"Enlaces sin subrayar",
+      enunciado:"Quita el subrayado a todos los enlaces (text-decoration: none) y ponlos en negrita.",
+      html:H_MENU,
+      pista:"La negrita es font-weight: bold;",
+      inicio:"",
+      solucion:'a {\n  text-decoration: none;\n  font-weight: bold;\n}',
+      checks:[
+        {msg:"Los enlaces no estan subrayados", test:function(d){ return (cs(d,"nav a","text-decoration-line") || "") === "none" && (cs(d,"p a","text-decoration-line") || "") === "none"; }},
+        {msg:"Los enlaces van en negrita", test:function(d){ return parseInt(cs(d,"nav a","font-weight"),10) >= 700; }}
+      ]
+    },
+    { id:"b2e8", bloque:"2. Colores y texto", tipo:"editor",
+      titulo:"Cursiva y color gris",
+      enunciado:"El parrafo .nota tiene que ir en cursiva (font-style: italic), de color gray y a 14px.",
+      html:'<h2>Matricula</h2>\n<p>El plazo acaba el viernes.</p>\n<p class="nota">Trae el DNI y una foto.</p>',
+      pista:"Tres declaraciones dentro de una regla .nota { }",
+      inicio:"",
+      solucion:'.nota {\n  font-style: italic;\n  color: gray;\n  font-size: 14px;\n}',
+      checks:[
+        {msg:".nota va en cursiva", test:function(d){ return cs(d,".nota","font-style") === "italic"; }},
+        {msg:".nota es gris", test:function(d){ return esColor(d,".nota","color","gray"); }},
+        {msg:".nota mide 14px", test:function(d){ return esPx(d,".nota","font-size",14); }},
+        {msg:"El otro parrafo no ha cambiado", test:function(d){ return cs(d,"p:not(.nota)","font-style") === "normal"; }}
+      ]
+    },
+
+    { id:"b3e1", bloque:"3. La caja", tipo:"editor",
+      titulo:"Relleno por dentro",
+      enunciado:"Pon a .caja un fondo lightblue y 20px de padding (relleno) por los cuatro lados.",
+      html:H_CAJA,
+      pista:"padding con un solo valor lo aplica a los cuatro lados: padding: 20px;",
+      inicio:"",
+      solucion:'.caja {\n  background-color: lightblue;\n  padding: 20px;\n}',
+      checks:[
+        {msg:"El fondo es lightblue", test:function(d){ return esColor(d,".caja","background-color","lightblue"); }},
+        {msg:"20px de padding en los cuatro lados", test:function(d){ return esPx(d,".caja","padding-top",20) && esPx(d,".caja","padding-right",20) && esPx(d,".caja","padding-bottom",20) && esPx(d,".caja","padding-left",20); }}
+      ]
+    },
+    { id:"b3e2", bloque:"3. La caja", tipo:"editor",
+      titulo:"Un borde",
+      enunciado:"Pon a .caja un borde de 2px, continuo (solid) y negro, en una sola declaracion border.",
+      html:H_CAJA,
+      pista:"border admite los tres datos seguidos, separados por espacios: grosor, estilo y color. border: 2px solid black;",
+      inicio:"",
+      solucion:'.caja {\n  border: 2px solid black;\n}',
+      checks:[
+        {msg:"El borde mide 2px", test:function(d){ return esPx(d,".caja","border-top-width",2) && esPx(d,".caja","border-left-width",2); }},
+        {msg:"Es continuo (solid)", test:function(d){ return cs(d,".caja","border-top-style") === "solid"; }},
+        {msg:"Es negro", test:function(d){ return esColor(d,".caja","border-top-color","black"); }}
+      ]
+    },
+    { id:"b3e3", bloque:"3. La caja", tipo:"editor",
+      titulo:"Centrar una caja",
+      enunciado:"Dale a .caja una anchura de 200px, un borde de 1px solid gray, y centrala en la pagina con margin: 0 auto.",
+      html:H_CAJA,
+      pista:"margin: 0 auto significa 0 arriba y abajo, y automatico a los lados: el navegador reparte el hueco a partes iguales. Solo funciona si la caja tiene width.",
+      inicio:"",
+      solucion:'.caja {\n  width: 200px;\n  border: 1px solid gray;\n  margin: 0 auto;\n}',
+      checks:[
+        {msg:"La caja mide 200px de ancho", test:function(d){ return esPx(d,".caja","width",200); }},
+        {msg:"Tiene borde de 1px", test:function(d){ return esPx(d,".caja","border-top-width",1); }},
+        {msg:"Los margenes laterales son auto", test:function(d){ var r = regla(d,".caja"); return !!r && r.marginLeft === "auto" && r.marginRight === "auto"; }}
+      ]
+    },
+    { id:"b3e4", bloque:"3. La caja", tipo:"detecta",
+      titulo:"Un espacio de mas",
+      enunciado:"El ancho no se aplica por culpa de una linea. Pulsala.",
+      lineas:['.caja {','  background-color: lightblue;','  width: 300 px;','  padding: 10px;','}'],
+      mala:2,
+      explicacion:"Entre el numero y la unidad no puede haber espacio: 300px, no 300 px. Con el espacio el valor no vale y el navegador se salta la declaracion entera."
+    },
+    { id:"b3e5", bloque:"3. La caja", tipo:"editor",
+      titulo:"Tamanio relativo con em",
+      enunciado:"Pon al h1 un tamanio de 2em (el doble del tamanio de letra normal) y al parrafo 1.2em.",
+      html:H_BAR,
+      pista:"em es relativo al tamanio de letra del padre: si el normal es 16px, 2em son 32px.",
+      inicio:"",
+      solucion:'h1 {\n  font-size: 2em;\n}\n\np {\n  font-size: 1.2em;\n}',
+      checks:[
+        {msg:"El h1 esta en 2em", test:function(d){ var r = regla(d,"h1"); return !!r && r.fontSize === "2em"; }},
+        {msg:"El parrafo esta en 1.2em", test:function(d){ var r = regla(d,"p"); return !!r && r.fontSize === "1.2em"; }},
+        {msg:"El navegador lo calcula: h1 a 32px", test:function(d){ return esPx(d,"h1","font-size",32); }}
+      ]
+    },
+    { id:"b3e6", bloque:"3. La caja", tipo:"editor",
+      titulo:"Un boton bonito",
+      enunciado:"El enlace .boton tiene que parecer un boton: fondo seagreen, texto white, padding 10px 20px, esquinas redondeadas de 8px (border-radius) y sin subrayado.",
+      html:'<p>Reserva tu mesa:</p>\n<a class="boton" href="#">Reservar</a>',
+      pista:"padding con dos valores: el primero es arriba y abajo, el segundo izquierda y derecha. Cinco declaraciones en total.",
+      inicio:"",
+      solucion:'.boton {\n  background-color: seagreen;\n  color: white;\n  padding: 10px 20px;\n  border-radius: 8px;\n  text-decoration: none;\n}',
+      checks:[
+        {msg:"Fondo seagreen y texto blanco", test:function(d){ return esColor(d,".boton","background-color","seagreen") && esColor(d,".boton","color","white"); }},
+        {msg:"padding 10px arriba/abajo y 20px a los lados", test:function(d){ return esPx(d,".boton","padding-top",10) && esPx(d,".boton","padding-left",20); }},
+        {msg:"Esquinas redondeadas de 8px", test:function(d){ return esPx(d,".boton","border-top-left-radius",8); }},
+        {msg:"Sin subrayado", test:function(d){ return cs(d,".boton","text-decoration-line") === "none"; }}
+      ]
+    },
+    { id:"b3e7", bloque:"3. La caja", tipo:"editor",
+      titulo:"Que mida lo que dice",
+      enunciado:"La caja tiene width 200px, pero con el padding y el borde ocupa mas. Anade una declaracion para que el ancho total, borde incluido, sea exactamente 200px.",
+      html:H_CAJA,
+      pista:"box-sizing: border-box; hace que width incluya el padding y el borde.",
+      inicio:'.caja {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid navy;\n}',
+      solucion:'.caja {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid navy;\n  box-sizing: border-box;\n}',
+      checks:[
+        {msg:"Sigue teniendo padding 20px y borde 5px", test:function(d){ return esPx(d,".caja","padding-left",20) && esPx(d,".caja","border-left-width",5); }},
+        {msg:"Ocupa exactamente 200px contando el borde", test:function(d){ var n = nodo(d,".caja"); return !!n && n.offsetWidth === 200; }}
+      ]
+    },
+    { id:"b3e8", bloque:"3. La caja", tipo:"elige",
+      titulo:"Calcula la caja",
+      enunciado:"Sin box-sizing, cuanto mide de ancho esta caja contando el borde (sin contar el margen)?",
+      codigo:'.caja {\n  width: 200px;\n  padding: 20px;\n  border: 5px solid black;\n  margin: 10px;\n}',
+      opciones:['200px','230px','250px','270px'],
+      correcta:2,
+      fallo:"Suma el padding y el borde de los DOS lados: izquierda y derecha.",
+      explicacion:"200 del contenido + 20 + 20 de padding + 5 + 5 de borde = 250px. El margen es espacio de fuera y no cuenta como parte de la caja."
+    },
+
+    { id:"b4e1", bloque:"4. Cascada y especificidad", tipo:"elige",
+      titulo:"Dos reglas iguales",
+      enunciado:"De que color sale el parrafo?",
+      codigo:'p {\n  color: red;\n}\n\np {\n  color: blue;\n}',
+      opciones:['Rojo','Azul','Negro, porque se anulan','Morado, se mezclan'],
+      correcta:1,
+      fallo:"Las dos reglas pesan lo mismo. Cual se lee despues?",
+      explicacion:"A igual especificidad gana la que esta escrita despues: eso es la cascada. La segunda regla pisa a la primera."
+    },
+    { id:"b4e2", bloque:"4. Cascada y especificidad", tipo:"elige",
+      titulo:"Id contra clase",
+      enunciado:"El HTML es <p id=\"aviso\" class=\"rojo\">Hola</p>. De que color sale?",
+      codigo:'#aviso {\n  color: green;\n}\n\n.rojo {\n  color: red;\n}\n\np {\n  color: blue;\n}',
+      opciones:['Verde','Rojo','Azul'],
+      correcta:0,
+      fallo:"Aqui el orden no decide: decide que selector es mas especifico.",
+      explicacion:"El id pesa mas que la clase, y la clase mas que la etiqueta. Da igual el orden: #aviso gana siempre a .rojo y a p."
+    },
+    { id:"b4e3", bloque:"4. Cascada y especificidad", tipo:"elige",
+      titulo:"El atributo style",
+      enunciado:"El HTML es <p id=\"x\" style=\"color: orange\">Hola</p> y la hoja de estilos dice lo de abajo. De que color sale?",
+      codigo:'#x {\n  color: green;\n}',
+      opciones:['Verde, porque el id pesa mucho','Naranja','Negro'],
+      correcta:1,
+      fallo:"Piensa en lo que esta mas cerca del elemento.",
+      explicacion:"El atributo style, escrito en la propia etiqueta, gana a cualquier selector de la hoja, id incluido. Solo lo tumbaria un !important."
+    },
+    { id:"b4e4", bloque:"4. Cascada y especificidad", tipo:"editor",
+      titulo:"La herencia trabaja por ti",
+      enunciado:"Consigue que TODO el texto de la pagina sea navy y en la fuente Georgia, escribiendo una sola regla para body. Nada de reglas para h1 ni p.",
+      html:H_AVISOS,
+      pista:"color y font-family se heredan: lo que pones en body lo reciben todos sus hijos.",
+      inicio:"",
+      solucion:'body {\n  color: navy;\n  font-family: Georgia, serif;\n}',
+      checks:[
+        {msg:"Los parrafos salen navy", test:function(d){ return esColor(d,"p","color","navy"); }},
+        {msg:"El h1 usa Georgia", test:function(d){ return /georgia/i.test(cs(d,"h1","font-family") || ""); }},
+        {msg:"Sin reglas propias para h1 ni p", test:function(d){ return !regla(d,"h1") && !regla(d,"p"); }}
+      ]
+    },
+    { id:"b4e5", bloque:"4. Cascada y especificidad", tipo:"editor",
+      titulo:"Ganar sin !important",
+      enunciado:"El enlace activo del menu tendria que salir amarillo (yellow), pero sale blanco porque #menu a pesa mas que .activo. Arreglalo cambiando el selector de la segunda regla, sin usar !important.",
+      html:'<nav id="menu" style="background:#223; padding:10px">\n  <a href="#">Inicio</a>\n  <a class="activo" href="#">Carta</a>\n  <a href="#">Contacto</a>\n</nav>',
+      pista:"Si el selector de la segunda regla tambien lleva el id, pesara mas: #menu .activo",
+      inicio:'#menu a {\n  color: white;\n}\n\n.activo {\n  color: yellow;\n}',
+      solucion:'#menu a {\n  color: white;\n}\n\n#menu .activo {\n  color: yellow;\n}',
+      checks:[
+        {msg:"El enlace activo sale amarillo", test:function(d){ return esColor(d,"a.activo","color","yellow"); }},
+        {msg:"Los demas siguen blancos", test:function(d){ return esColor(d,"#menu a:not(.activo)","color","white"); }},
+        {msg:"Sin !important", test:function(d,s){ return !/!\s*important/i.test(sinComentarios(s)); }}
+      ]
+    },
+
+    { id:"b5e1", bloque:"5. Donde va el CSS", tipo:"editor", editaHtml:true,
+      titulo:"La etiqueta style",
+      enunciado:"Aqui escribes la pagina HTML entera. Dentro del head, anade una etiqueta style que ponga el h1 de color maroon.",
+      pista:"<style> va dentro de <head>, y dentro de style escribes CSS normal: h1 { color: maroon; }. No te olvides de cerrar con </style>.",
+      inicio:PAGINA('', '  <h1>Mi primera web</h1>\n  <p>Hecha en clase de lenguajes de marcas.</p>\n'),
+      solucion:PAGINA('  <style>\n    h1 {\n      color: maroon;\n    }\n  </style>\n', '  <h1>Mi primera web</h1>\n  <p>Hecha en clase de lenguajes de marcas.</p>\n'),
+      checks:[
+        {msg:"Hay una etiqueta style dentro del head", test:function(d){ return !!nodo(d,"head style"); }},
+        {msg:"El h1 sale maroon", test:function(d){ return esColor(d,"h1","color","maroon"); }}
+      ]
+    },
+    { id:"b5e2", bloque:"5. Donde va el CSS", tipo:"editor", editaHtml:true,
+      titulo:"El atributo style",
+      enunciado:"Sin tocar el head: pon al parrafo un atributo style que lo ponga de color green.",
+      pista:"Se escribe dentro de la etiqueta de apertura: <p style=\"color: green;\">. Aqui no hay selector ni llaves.",
+      inicio:PAGINA('', '  <h1>Mi primera web</h1>\n  <p>Hecha en clase de lenguajes de marcas.</p>\n'),
+      solucion:PAGINA('', '  <h1>Mi primera web</h1>\n  <p style="color: green;">Hecha en clase de lenguajes de marcas.</p>\n'),
+      checks:[
+        {msg:"El parrafo lleva atributo style", test:function(d){ return !!nodo(d,"p[style]"); }},
+        {msg:"El parrafo sale verde", test:function(d){ return esColor(d,"p","color","green"); }},
+        {msg:"No hay etiqueta style en el head", test:function(d){ return !nodo(d,"style"); }}
+      ]
+    },
+    { id:"b5e3", bloque:"5. Donde va el CSS", tipo:"editor", editaHtml:true,
+      titulo:"Enlazar la hoja externa",
+      enunciado:"La forma buena: el CSS en su propio fichero. Enlaza desde el head la hoja estilos.css con una etiqueta link. (Aqui no existe ese fichero, asi que la pagina no cambiara: se comprueba que la etiqueta este bien escrita.)",
+      pista:"<link rel=\"stylesheet\" href=\"estilos.css\"> va dentro del head. No lleva cierre.",
+      inicio:PAGINA('', '  <h1>Mi primera web</h1>\n'),
+      solucion:PAGINA('  <link rel="stylesheet" href="estilos.css">\n', '  <h1>Mi primera web</h1>\n'),
+      checks:[
+        {msg:"Hay una etiqueta link dentro del head", test:function(d){ return !!nodo(d,"head link"); }},
+        {msg:"Lleva rel=\"stylesheet\"", test:function(d){ var l = nodo(d,"head link"); return !!l && (l.getAttribute("rel")||"").toLowerCase() === "stylesheet"; }},
+        {msg:"Lleva href=\"estilos.css\"", test:function(d){ var l = nodo(d,"head link"); return !!l && l.getAttribute("href") === "estilos.css"; }}
+      ]
+    },
+    { id:"b5e4", bloque:"5. Donde va el CSS", tipo:"detecta",
+      titulo:"El enlace que no carga",
+      enunciado:"La hoja de estilos no se aplica. Pulsa la linea culpable.",
+      lineas:['<!DOCTYPE html>','<html lang="es">','<head>','  <meta charset="UTF-8">','  <title>Bar Manzanares</title>','  <link rel="stylesheet" src="estilos.css">','</head>','<body>','  <h1>Bar Manzanares</h1>','</body>','</html>'],
+      mala:5,
+      explicacion:"La etiqueta link indica el fichero con href, no con src (src es de img y script). Con src el navegador no sabe que hoja cargar. Correcto: <link rel=\"stylesheet\" href=\"estilos.css\">"
+    },
+
+    { id:"b6e1", bloque:"6. Maquetar", tipo:"editor",
+      titulo:"Esconder y poner en fila",
+      enunciado:"Esconde el parrafo .oculto (display: none) y haz que los li de la lista salgan uno al lado del otro con display: inline-block.",
+      html:'<ul>\n  <li>Inicio</li>\n  <li>Carta</li>\n  <li>Contacto</li>\n</ul>\n<p class="oculto">Este texto no se tiene que ver.</p>\n<p>Este si.</p>',
+      pista:"Dos reglas: .oculto { display: none; } y li { display: inline-block; }",
+      inicio:"",
+      solucion:'.oculto {\n  display: none;\n}\n\nli {\n  display: inline-block;\n}',
+      checks:[
+        {msg:".oculto no se ve", test:function(d){ return cs(d,".oculto","display") === "none"; }},
+        {msg:"Los li van en fila", test:function(d){ return cs(d,"li","display") === "inline-block"; }},
+        {msg:"El otro parrafo se sigue viendo", test:function(d){ return cs(d,"p:not(.oculto)","display") === "block"; }}
+      ]
+    },
+    { id:"b6e2", bloque:"6. Maquetar", tipo:"editor",
+      titulo:"Flexbox: en fila y repartidos",
+      enunciado:"Haz que .fila coloque sus hijos en fila con display: flex, y que los reparta con justify-content: space-between.",
+      html:'<div class="fila" style="border:1px dashed gray">\n  <span>Logo</span>\n  <span>Menu</span>\n  <span>Entrar</span>\n</div>',
+      pista:"Las dos propiedades van en el CONTENEDOR (.fila), no en los hijos.",
+      inicio:"",
+      solucion:'.fila {\n  display: flex;\n  justify-content: space-between;\n}',
+      checks:[
+        {msg:".fila es flex", test:function(d){ return cs(d,".fila","display") === "flex"; }},
+        {msg:"Reparte con space-between", test:function(d){ return cs(d,".fila","justify-content") === "space-between"; }}
+      ]
+    },
+    { id:"b6e3", bloque:"6. Maquetar", tipo:"editor",
+      titulo:"Centrar del todo",
+      enunciado:"Centra el texto de .centro en horizontal Y en vertical. La caja mide 150px de alto: display flex, justify-content center y align-items center.",
+      html:'<div class="centro" style="border:1px dashed gray">\n  <p>Justo en medio</p>\n</div>',
+      pista:"justify-content centra en el eje principal (horizontal) y align-items en el otro (vertical). Y ponle height: 150px.",
+      inicio:"",
+      solucion:'.centro {\n  height: 150px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}',
+      checks:[
+        {msg:"Mide 150px de alto", test:function(d){ return esPx(d,".centro","height",150); }},
+        {msg:"Es flex", test:function(d){ return cs(d,".centro","display") === "flex"; }},
+        {msg:"Centrado en horizontal", test:function(d){ return cs(d,".centro","justify-content") === "center"; }},
+        {msg:"Centrado en vertical", test:function(d){ return cs(d,".centro","align-items") === "center"; }}
+      ]
+    },
+    { id:"b6e4", bloque:"6. Maquetar", tipo:"editor",
+      titulo:"Galeria con hueco",
+      enunciado:"Pon las cajitas de .galeria en fila (flex), que bajen a otra linea si no caben (flex-wrap: wrap) y con 10px de separacion entre ellas (gap).",
+      html:'<div class="galeria">\n  <div class="foto">1</div>\n  <div class="foto">2</div>\n  <div class="foto">3</div>\n  <div class="foto">4</div>\n  <div class="foto">5</div>\n</div>\n<style>.foto{width:90px;height:60px;background:#9cc;display:grid;place-items:center}</style>',
+      pista:"Tres declaraciones en .galeria: display: flex; flex-wrap: wrap; gap: 10px;",
+      inicio:"",
+      solucion:'.galeria {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 10px;\n}',
+      checks:[
+        {msg:".galeria es flex", test:function(d){ return cs(d,".galeria","display") === "flex"; }},
+        {msg:"Baja de linea si no cabe", test:function(d){ return cs(d,".galeria","flex-wrap") === "wrap"; }},
+        {msg:"10px de hueco", test:function(d){ return esPx(d,".galeria","column-gap",10) && esPx(d,".galeria","row-gap",10); }}
+      ]
+    },
+    { id:"b6e5", bloque:"6. Maquetar", tipo:"editor",
+      titulo:"Tarjeta de producto",
+      enunciado:"Ejercicio de examen: .tarjeta con ancho 250px, borde 1px solid #ccc, esquinas de 10px y padding 16px. El h2 de dentro, darkgreen. El .precio, a 24px y en negrita.",
+      html:H_TARJETA,
+      pista:"Tres reglas: .tarjeta, .tarjeta h2 (o h2) y .precio. Escribe primero las tres parejas de llaves y rellena despues.",
+      inicio:"",
+      solucion:'.tarjeta {\n  width: 250px;\n  border: 1px solid #ccc;\n  border-radius: 10px;\n  padding: 16px;\n}\n\n.tarjeta h2 {\n  color: darkgreen;\n}\n\n.precio {\n  font-size: 24px;\n  font-weight: bold;\n}',
+      checks:[
+        {msg:"La tarjeta mide 250px y tiene padding 16px", test:function(d){ return esPx(d,".tarjeta","width",250) && esPx(d,".tarjeta","padding-top",16); }},
+        {msg:"Borde 1px solid #ccc con esquinas de 10px", test:function(d){ return esPx(d,".tarjeta","border-top-width",1) && cs(d,".tarjeta","border-top-style") === "solid" && esColor(d,".tarjeta","border-top-color","#ccc") && esPx(d,".tarjeta","border-top-left-radius",10); }},
+        {msg:"El h2 es darkgreen", test:function(d){ return esColor(d,".tarjeta h2","color","darkgreen"); }},
+        {msg:"El precio a 24px y en negrita", test:function(d){ return esPx(d,".precio","font-size",24) && parseInt(cs(d,".precio","font-weight"),10) >= 700; }}
+      ]
+    },
+    { id:"b6e6", bloque:"6. Maquetar", tipo:"detecta",
+      titulo:"Examen largo: un solo fallo",
+      enunciado:"Una hoja de estilos entera con un fallo. Pulsa la linea culpable.",
+      lineas:['body {','  font-family: Arial, sans-serif;','  margin: 0;','}','header {','  background-color: #223;','  color: white;','  padding: 20px;','}','h1 {','  text-align: centre;','  font-size: 2em;','}'],
+      mala:10,
+      explicacion:"Los valores de CSS estan en ingles americano: center, no centre (ni centro). El navegador ignora esa declaracion y el titulo se queda a la izquierda."
+    }
+  ];
+
+  var LECCIONES = [
+    {
+      id:"L0", titulo:"Escribir CSS tecla a tecla",
+      resumen:"Empieza aqui si nunca has escrito CSS",
+      ejercicios:["b0e1","b0e2","b0e3","b0e4","b0e5","b0e6"],
+      cuerpo:[
+        {p:"Antes de entender CSS hay que saber escribirlo sin pelearse con el teclado. Esta leccion es solo mecanica: donde estan las teclas y en que orden se escribe una regla."},
+        {p:"El orden con el que hay que acostumbrarse a escribir es este, y no el de izquierda a derecha:"},
+        {code:"1. Escribes el selector y las dos llaves:\n   h1 {\n   }\n\n2. Pones el cursor dentro, dos espacios, y una declaracion:\n   h1 {\n     color: red;\n   }\n\n3. Cada declaracion nueva, en su linea y con su ;\n   h1 {\n     color: red;\n     font-size: 40px;\n   }"},
+        {p:"Escribiendo asi es imposible dejarse una llave sin cerrar, que junto con el punto y coma olvidado es el error que mas nota quita."},
+        {fijate:[
+          "Las llaves en teclado espaniol: { es AltGr mas la tecla de la tilde, a la derecha de la enie; } es AltGr mas la tecla de la cedilla.",
+          "Los dos puntos son Mayusculas mas el punto. El punto y coma, Mayusculas mas la coma.",
+          "La almohadilla # de los ids y colores es AltGr mas el 3.",
+          "Encima del recuadro tienes una barra gris con esos simbolos: pulsa y se insertan donde tengas el cursor. El tabulador mete dos espacios."
+        ]},
+        {ojo:"A la derecha del ejercicio tienes <b>como queda tu pagina</b> en vivo, y a la izquierda <b>como tiene que quedar</b>. Si se parecen, vas bien."}
+      ]
+    },
+    {
+      id:"L1", titulo:"Que es CSS y para que sirve",
+      resumen:"Opcional: saltala si ya lo sabes",
+      ejercicios:[],
+      cuerpo:[
+        {p:"HTML dice QUE hay en una pagina: un titulo, un parrafo, un enlace. CSS dice COMO se ve: de que color, de que tamanio, donde va colocado. Son dos ficheros distintos que trabajan juntos."},
+        {p:"Sin CSS, todas las webs serian texto negro sobre fondo blanco, una cosa debajo de otra. Con CSS le dices al navegador, por ejemplo, que todos los titulos sean azules:"},
+        {code:"h1 {\n  color: blue;\n}"},
+        {p:"Eso es una regla. Con una sola regla cambias todos los h1 de la web a la vez, aunque haya cien paginas. Esa es la gracia: el aspecto se escribe una vez y se aplica a todo."},
+        {fijate:[
+          "CSS significa hojas de estilo en cascada (Cascading Style Sheets). Lo de cascada lo veras en la leccion 11.",
+          "Se escribe en un fichero de texto normal con extension .css, con el Bloc de notas o con Notepad++ o VS Code.",
+          "Los nombres de propiedades y valores estan en ingles: color, red, center. No hay traduccion."
+        ]},
+        {ojo:"CSS no da error como XML: si escribes algo mal, el navegador <b>se salta esa linea en silencio</b> y sigue con lo demas. Por eso aqui tienes un revisor que te dice que linea se ha saltado y por que."}
+      ]
+    },
+    {
+      id:"L2", titulo:"Anatomia de una regla",
+      resumen:"Selector, propiedad y valor",
+      ejercicios:["b1e1","b1e2","b1e3"],
+      cuerpo:[
+        {p:"Toda regla de CSS tiene la misma forma. Aprende los nombres de cada parte, porque el profesor los usara en el examen:"},
+        {code:"p {                  <- selector: a quien se aplica\n  color: blue;       <- declaracion\n  font-size: 20px;   <- otra declaracion\n}\n\ncolor      = propiedad (que cambias)\nblue       = valor (como lo dejas)"},
+        {p:"El selector elige los elementos. Entre llaves van las declaraciones, cada una con la forma propiedad: valor; y acabada en punto y coma."},
+        {fijate:[
+          "Entre propiedad y valor van dos puntos, nunca un igual.",
+          "Cada declaracion acaba en punto y coma. Si te lo dejas, esa linea y la siguiente se estropean juntas.",
+          "Cada llave que abres se cierra. Una llave sin cerrar se come las reglas que vienen detras.",
+          "Los espacios y saltos de linea dan igual para el navegador, pero sangrar dos espacios por dentro hace que un fallo se vea a simple vista."
+        ]},
+        {ojo:"<b>Truco:</b> cuando algo no se aplica, lo primero es mirar el final de la linea de arriba. El 80 % de las veces falta un punto y coma o una llave."}
+      ]
+    },
+    {
+      id:"L3", titulo:"Donde se escribe el CSS",
+      resumen:"style, <style> y <link>",
+      ejercicios:["b5e1","b5e2","b5e3","b5e4"],
+      cuerpo:[
+        {p:"Hay tres sitios donde poner CSS. Te lo preguntaran seguro:"},
+        {code:"1. En linea, en el atributo style de una etiqueta:\n   <p style=\"color: green;\">Hola</p>\n\n2. Interno, en una etiqueta <style> dentro del <head>:\n   <style>\n     p { color: green; }\n   </style>\n\n3. Externo, en un fichero aparte enlazado con <link>:\n   <link rel=\"stylesheet\" href=\"estilos.css\">"},
+        {p:"El bueno es el tercero: un fichero .css que enlazan todas las paginas de la web. Cambias ese fichero y cambia toda la web."},
+        {fijate:[
+          "<link> y <style> van dentro de <head>, no en el body.",
+          "link se escribe con href (el fichero) y rel=\"stylesheet\". No con src.",
+          "En el fichero .css NO se escribe <style>: solo las reglas.",
+          "El atributo style no lleva selector ni llaves, solo declaraciones."
+        ]},
+        {ojo:"Si la hoja externa no se aplica, casi siempre es la ruta: el href tiene que coincidir <b>exactamente</b> con el nombre y la carpeta del fichero, mayusculas incluidas."}
+      ]
+    },
+    {
+      id:"L4", titulo:"Selectores: etiqueta, clase e id",
+      resumen:"A quien se aplica cada regla",
+      ejercicios:["b1e4","b1e5","b1e6","b1e7"],
+      cuerpo:[
+        {p:"El selector decide a que elementos afecta la regla. Los tres basicos:"},
+        {code:"p        { }  -> todos los parrafos\n.aviso   { }  -> todo lo que tenga class=\"aviso\"\n#portada { }  -> el elemento con id=\"portada\"\n\nh1, h2, h3 { } -> los tres a la vez (con comas)\n*          { } -> absolutamente todo"},
+        {p:"La clase se puede repetir en muchos elementos; el id es unico en la pagina. Por eso para dar estilo se usan casi siempre clases."},
+        {fijate:[
+          "Clase con punto delante, id con almohadilla. En el HTML se escriben sin punto ni almohadilla: class=\"aviso\".",
+          "Los nombres de clase no pueden empezar por numero: .1oferta no vale.",
+          "Las comas agrupan: h1, h2 { } es lo mismo que escribir dos reglas iguales.",
+          "Mayusculas cuentan en clases e ids: .Aviso no coge class=\"aviso\"."
+        ]}
+      ]
+    },
+    {
+      id:"L5", titulo:"Selectores combinados y pseudoclases",
+      resumen:"Dentro de, y al pasar el raton",
+      ejercicios:["b1e8","b1e9","b1e10"],
+      cuerpo:[
+        {p:"Los selectores se pueden combinar para afinar mas:"},
+        {code:"nav a      { } -> los a que esten DENTRO de nav (a cualquier profundidad)\nul > li    { } -> los li que sean hijos DIRECTOS de ul\np.aviso    { } -> los p que ademas tengan class=\"aviso\" (sin espacio)\na:hover    { } -> los enlaces mientras el raton esta encima\nli:first-child { } -> el primer li de su lista"},
+        {fijate:[
+          "El espacio importa: p .aviso (con espacio) es algo con clase aviso DENTRO de un p; p.aviso (sin espacio) es un p con clase aviso.",
+          "Las pseudoclases van pegadas con dos puntos: a:hover, sin espacio.",
+          "Las mas preguntadas: :hover, :first-child, :last-child, :nth-child(2)."
+        ]}
+      ]
+    },
+    {
+      id:"L6", titulo:"Colores",
+      resumen:"Nombre, hexadecimal, rgb y rgba",
+      ejercicios:["b2e1","b2e2","b2e3","b2e4"],
+      cuerpo:[
+        {p:"Un color se puede escribir de cuatro formas. Las cuatro lineas de abajo son el mismo rojo:"},
+        {code:"color: red;                 nombre en ingles\ncolor: #ff0000;             hexadecimal (tambien #f00)\ncolor: rgb(255, 0, 0);      rojo, verde, azul de 0 a 255\ncolor: rgba(255, 0, 0, 1);  lo mismo + opacidad de 0 a 1"},
+        {fijate:[
+          "color es el color del texto; background-color, el del fondo.",
+          "Hexadecimal: # y 6 cifras (o 3). Cada pareja es rojo, verde y azul, de 00 a ff.",
+          "En rgba el ultimo numero es la opacidad: 0 invisible, 0.5 a medias, 1 opaco. Decimal con PUNTO.",
+          "Los nombres son en ingles: red, blue, gray, navy, white. rojo no existe."
+        ]}
+      ]
+    },
+    {
+      id:"L7", titulo:"Texto y tipografia",
+      resumen:"Fuente, tamanio, negrita, alineacion",
+      ejercicios:["b2e5","b2e6","b2e7","b2e8"],
+      cuerpo:[
+        {p:"Las propiedades de texto que vas a usar siempre:"},
+        {code:"font-family: Arial, sans-serif;  tipo de letra (con reserva)\nfont-size: 18px;                 tamanio\nfont-weight: bold;               negrita (o 700)\nfont-style: italic;              cursiva\ntext-align: center;              left, right, center, justify\ntext-decoration: none;           quita el subrayado\ntext-transform: uppercase;       todo en mayusculas\nline-height: 1.5;                interlineado"},
+        {fijate:[
+          "En font-family pon siempre una familia generica al final (serif, sans-serif o monospace), por si el ordenador no tiene la primera.",
+          "Si el nombre de la fuente tiene espacios va entre comillas: \"Times New Roman\".",
+          "text-decoration: none es lo que se usa para quitar el subrayado de los enlaces."
+        ]}
+      ]
+    },
+    {
+      id:"L8", titulo:"Unidades de medida",
+      resumen:"px, em, rem y %",
+      ejercicios:["b3e4","b3e5"],
+      cuerpo:[
+        {p:"Casi todos los tamanios necesitan una unidad pegada al numero:"},
+        {code:"px   pixeles: fijo.                     width: 300px;\n%    porcentaje del padre.              width: 50%;\nem   veces el tamanio de letra del padre. font-size: 2em;\nrem  veces el tamanio de letra del html.  font-size: 1.5rem;"},
+        {fijate:[
+          "Numero y unidad van PEGADOS: 300px. Con espacio (300 px) no vale y la linea se ignora.",
+          "Sin unidad tampoco vale (width: 300), salvo el 0 y line-height.",
+          "El tamanio de letra normal del navegador es 16px: 2em = 32px, 1.5rem = 24px."
+        ]}
+      ]
+    },
+    {
+      id:"L9", titulo:"El modelo de caja",
+      resumen:"padding, border, margin",
+      ejercicios:["b3e1","b3e2","b3e3","b3e6","b3e7","b3e8"],
+      cuerpo:[
+        {p:"Para el navegador todo elemento es una caja con cuatro capas, de dentro hacia fuera:"},
+        {code:"+-------------- margin (fuera, transparente) --------------+\n|  +----------- border (el borde) ------------------------+  |\n|  |  +-------- padding (relleno, lleva el fondo) ------+  |  |\n|  |  |          contenido (width x height)            |  |  |\n|  |  +------------------------------------------------+  |  |\n|  +------------------------------------------------------+  |\n+------------------------------------------------------------+"},
+        {p:"padding separa el contenido de su borde; margin separa la caja de las de al lado."},
+        {code:"padding: 10px;              los 4 lados\npadding: 10px 20px;         arriba/abajo  izquierda/derecha\npadding: 5px 10px 15px 20px;  arriba derecha abajo izquierda (reloj)\nborder: 2px solid black;    grosor estilo color\nmargin: 0 auto;             centra una caja que tenga width\nborder-radius: 8px;         esquinas redondeadas"},
+        {fijate:[
+          "Ancho que ocupa por defecto = width + padding izquierdo y derecho + borde izquierdo y derecho.",
+          "Con box-sizing: border-box, width ya incluye padding y borde. Mucho mas facil de calcular.",
+          "Los 4 valores van en el orden de las agujas del reloj empezando por arriba."
+        ]},
+        {ojo:"Pregunta tipica de examen: <b>calcular cuanto ocupa una caja</b>. Suma width + 2 x padding + 2 x borde. El margen no forma parte de la caja."}
+      ]
+    },
+    {
+      id:"L10", titulo:"Cascada, herencia y especificidad",
+      resumen:"Quien gana cuando dos reglas chocan",
+      ejercicios:["b4e1","b4e2","b4e3","b4e4","b4e5"],
+      cuerpo:[
+        {p:"Cuando dos reglas dicen cosas distintas del mismo elemento, gana una. El orden para decidir:"},
+        {code:"1. !important gana a todo (usalo lo menos posible)\n2. El atributo style de la etiqueta\n3. El selector mas especifico:\n     id (#x)  >  clase (.x), :hover  >  etiqueta (p)\n4. A igualdad, la regla escrita mas abajo"},
+        {p:"Herencia: algunas propiedades, sobre todo las de texto (color, font-family, font-size), pasan de padre a hijos. Por eso poniendolas en body cambias toda la pagina. Las de caja (border, padding, margin, background) NO se heredan."},
+        {fijate:[
+          "#menu a pesa mas que .activo porque lleva un id. Para ganarle, el otro selector tiene que llevar tambien el id: #menu .activo.",
+          "Si dos reglas pesan igual, gana la ultima. Por eso el orden de la hoja importa.",
+          "!important es un parche: si lo necesitas, casi siempre es que el selector esta mal pensado."
+        ]}
+      ]
+    },
+    {
+      id:"L11", titulo:"display y flexbox",
+      resumen:"Colocar cosas en fila y centrar",
+      ejercicios:["b6e1","b6e2","b6e3","b6e4"],
+      cuerpo:[
+        {p:"display decide como se coloca un elemento:"},
+        {code:"display: block;         ocupa todo el ancho, debajo del anterior (div, p, h1)\ndisplay: inline;        en la linea, sin ancho propio (a, span)\ndisplay: inline-block;  en la linea pero admite width y height\ndisplay: none;          no se ve ni ocupa sitio\ndisplay: flex;          sus HIJOS se colocan en fila"},
+        {p:"Flexbox es la forma moderna de maquetar. Todo se pone en el contenedor:"},
+        {code:".fila {\n  display: flex;\n  justify-content: space-between;  /* reparto horizontal */\n  align-items: center;             /* alineacion vertical */\n  flex-wrap: wrap;                 /* baja si no cabe */\n  gap: 10px;                       /* hueco entre hijos */\n}"},
+        {fijate:[
+          "justify-content: flex-start, center, flex-end, space-between, space-around.",
+          "Para centrar algo del todo: display flex + justify-content center + align-items center, y que el contenedor tenga altura.",
+          "Las propiedades van en el padre, no en los hijos."
+        ]}
+      ]
+    },
+    {
+      id:"L12", titulo:"Comprobar antes de entregar",
+      resumen:"El habito que da el 10",
+      ejercicios:["b6e5","b6e6"],
+      cuerpo:[
+        {p:"CSS nunca da error en pantalla: lo que esta mal, simplemente no se aplica. Por eso la unica forma de estar seguro es mirar."},
+        {fijate:[
+          "Abre tu pagina en el navegador y comprueba cada cosa que pide el enunciado, una por una.",
+          "Si algo no se aplica: clic derecho encima, Inspeccionar. En el panel de estilos, lo que el navegador no entiende sale TACHADO o con un triangulo amarillo. Esa es la linea mala.",
+          "Revisa lo tipico: punto y coma, llaves, unidad pegada al numero, nombre de clase igual en el HTML y en el CSS, y el href del link.",
+          "En este taller tienes la pestania Mi pagina: pega tu practica y te dice la linea exacta del fallo."
+        ]},
+        {ojo:"Y lo que ningun revisor ve: el <b>nombre del fichero</b> que pida el profesor (estilos.css, index.html), que el CSS vaya en un <b>fichero aparte</b> si lo pide asi, y que la pagina responda <b>exactamente</b> al enunciado. Apunta en clase todo lo que diga de palabra."}
+      ]
+    }
+  ];
+
+  // ---------- revisor de CSS ----------
+  // El navegador no avisa de nada: lo que no entiende lo tira en silencio.
+  // Este revisor recorre el CSS y avisa de la primera cosa que el navegador se saltaria.
+  var PROPS_COMUNES = ["color","background","background-color","background-image","border","border-radius","border-color","border-width","border-style","border-top","border-bottom","margin","margin-top","margin-bottom","margin-left","margin-right","padding","padding-top","padding-bottom","padding-left","padding-right","width","height","max-width","min-width","min-height","max-height","font","font-family","font-size","font-weight","font-style","text-align","text-decoration","text-transform","text-indent","line-height","letter-spacing","display","position","top","left","right","bottom","float","clear","flex","flex-direction","flex-wrap","justify-content","align-items","gap","opacity","box-sizing","box-shadow","overflow","z-index","cursor","list-style","list-style-type","vertical-align","white-space","transition","transform","outline","content","grid-template-columns","text-shadow","visibility","flex-grow"];
+  var ERRATAS = {"colour":"color","font-color":"color","text-color":"color","colors":"color","background-colour":"background-color","backgroud":"background","backgroud-color":"background-color","text-size":"font-size","font-align":"text-align","align":"text-align","text-bold":"font-weight","font-bold":"font-weight","bold":"font-weight","border-radious":"border-radius","padding-up":"padding-top","margin-up":"margin-top","heigth":"height","widht":"width","with":"width","justify-items":"justify-content"};
+  var VALORES_ESP = {"centre":"center","centro":"center","centrado":"center","izquierda":"left","derecha":"right","negrita":"bold","cursiva":"italic","ninguno":"none","rojo":"red","azul":"blue","verde":"green","negro":"black","blanco":"white","gris":"gray","amarillo":"yellow","naranja":"orange"};
+
+  function distancia(a, b){
+    var m = a.length, n = b.length, i, j, prev, cur = [], fila = [];
+    for(j=0;j<=n;j++) fila[j] = j;
+    for(i=1;i<=m;i++){
+      cur = [i];
+      for(j=1;j<=n;j++) cur[j] = Math.min(fila[j]+1, cur[j-1]+1, fila[j-1] + (a[i-1]===b[j-1]?0:1));
+      fila = cur;
+    }
+    return fila[n];
+  }
+  function parecida(p){
+    if(ERRATAS[p]) return ERRATAS[p];
+    var mejor = null, dm = 3, i, dd;
+    for(i=0;i<PROPS_COMUNES.length;i++){ dd = distancia(p, PROPS_COMUNES[i]); if(dd < dm){ dm = dd; mejor = PROPS_COMUNES[i]; } }
+    return mejor;
+  }
+  function soporta(p, v){ try{ return CSS.supports(p, v); }catch(e){ return true; } }
+
+  function pistaValor(p, v){
+    var palabra = v.toLowerCase();
+    if(VALORES_ESP[palabra]) return "El valor " + v + " no existe: los valores de CSS van en ingles. Aqui seria " + VALORES_ESP[palabra] + ".";
+    if(/\d\s+(px|em|rem|%|vh|vw|pt|cm|mm|s|ms|deg)\b/i.test(v)) return "Entre el numero y la unidad no va espacio: " + v.replace(/(\d)\s+([a-z%]+)/ig,"$1$2") + ", no " + v + ".";
+    if(/(^|\s)\d*\.?\d+(\s|$)/.test(v) && /(width|height|margin|padding|size|top|left|right|bottom|gap|radius|border|indent|spacing)/.test(p))
+      return "A " + p + " le falta la unidad: por ejemplo " + v.trim().split(/\s+/)[0] + "px. Solo el 0 puede ir sin unidad.";
+    if(/\d,\d/.test(v) && !/rgba?\(|hsla?\(/i.test(v)) return "Los decimales en CSS van con punto, no con coma: " + v.replace(/(\d),(\d)/g,"$1.$2") + ".";
+    if(/#/.test(v)) return "Color hexadecimal mal escrito: es # seguido de 3 o 6 cifras, del 0 al 9 y de la a a la f. Por ejemplo #f60 o #ff6600.";
+    if(/^rgba?\s*\(/i.test(v)) return "rgb() lleva tres numeros de 0 a 255 separados por comas, y rgba() un cuarto entre 0 y 1 con punto: rgba(255, 102, 0, 0.5).";
+    if(/^["'].*["']$/.test(v) && p !== "font-family" && p !== "content") return "Este valor no va entre comillas: quitalas.";
+    if(/color/.test(p) && /^[a-z]+$/i.test(v)) return "El color " + v + " no existe. Los nombres de colores van en ingles (red, blue, navy...) o en hexadecimal (#ff0000).";
+    return "El valor " + v + " no vale para la propiedad " + p + ". El navegador se salta esta declaracion.";
+  }
+
+  // Revisa una declaracion suelta. Devuelve null si esta bien o {at, msg} si no.
+  function revisarDeclaracion(texto, at){
+    var d = texto.replace(/^\s+/, ""), p0 = at + (texto.length - d.length);
+    d = d.replace(/\s+$/, "");
+    if(!d) return null;
+    var dos = d.indexOf(":");
+    if(dos < 0){
+      if(/=/.test(d)) return {at:p0 + d.indexOf("="), msg:"En CSS entre la propiedad y el valor van dos puntos, no un igual. Se escribe asi: color: red;"};
+      if(/^-?[a-z][a-z-]*\s+\S/i.test(d)) return {at:p0, msg:"Faltan los dos puntos entre la propiedad y el valor. La forma es propiedad: valor;"};
+      if(/^-?[a-z][a-z-]*$/i.test(d)) return {at:p0, msg:"La propiedad " + d + " esta sola, sin dos puntos ni valor."};
+      return {at:p0, msg:"Esto no tiene la forma propiedad: valor; y el navegador lo ignora."};
+    }
+    var prop = d.slice(0, dos).trim(), valRaw = d.slice(dos + 1);
+    var valIni = p0 + dos + 1 + (valRaw.length - valRaw.replace(/^\s+/, "").length);
+    var val = valRaw.trim();
+    if(prop.slice(0,2) === "--") return null;
+    var np = prop.search(/\n/);
+    if(np >= 0) return {at:p0 + np, msg:"Falta el punto y coma ; al final de esta linea."};
+    if(/\s/.test(prop)) return {at:p0, msg:"El nombre de la propiedad no puede llevar espacios: " + prop + ". Se usan guiones: font-size."};
+    var falta = valRaw.search(/\n[ \t]*-?[a-z][a-z-]*[ \t]*:/i);
+    if(falta >= 0) return {at:p0 + dos + 1 + falta, msg:"Falta el punto y coma ; al final de esta linea. Sin el, el navegador lee esta declaracion y la siguiente como una sola, y se salta las dos."};
+    if(!/url\(/i.test(val) && /\s-?[a-z][a-z-]*\s*:\s*\S/i.test(val)) return {at:valIni, msg:"Parece que hay dos declaraciones seguidas sin punto y coma entre ellas."};
+    var pl = prop.toLowerCase();
+    if(!/^-?[a-z][a-z-]*$/.test(pl)) return {at:p0, msg:"El nombre de la propiedad " + prop + " lleva caracteres que no valen. Solo letras y guiones."};
+    if(!soporta(pl, "inherit")){
+      var sug = parecida(pl);
+      return {at:p0, msg:"La propiedad " + prop + " no existe en CSS." + (sug ? " Querias decir " + sug + "?" : " Revisa como se escribe.")};
+    }
+    if(!val) return {at:valIni, msg:"La propiedad " + prop + " no tiene valor."};
+    var v = val.replace(/\s*!\s*important\s*$/i, "");
+    if(/!/.test(v)) return {at:valIni + val.indexOf("!"), msg:"!important mal escrito: va al final del valor, pegado a important: color: red !important;"};
+    if(!v) return {at:valIni, msg:"La propiedad " + prop + " no tiene valor."};
+    if(!soporta(pl, v)) return {at:valIni, msg:pistaValor(pl, v)};
+    return null;
+  }
+
+  function lineaColDe(fuente, at){
+    var antes = fuente.slice(0, at), linea = antes.split("\n").length;
+    return {linea:linea, col:at - antes.lastIndexOf("\n")};
+  }
+
+  var FRAG = document.createDocumentFragment();
+  function errorSelector(sel){
+    var partes = [], prof = 0, ini = 0, i, c;
+    for(i=0;i<sel.length;i++){
+      c = sel[i];
+      if(c === "(") prof++; else if(c === ")") prof--;
+      else if(c === "," && prof === 0){ partes.push(sel.slice(ini, i)); ini = i + 1; }
+    }
+    partes.push(sel.slice(ini));
+    for(i=0;i<partes.length;i++){
+      var p = partes[i].trim();
+      if(!p) return "Sobra una coma, o falta un selector entre dos comas.";
+      if(/(^|[\s>+~])\.\d/.test(p)) return "Un nombre de clase no puede empezar por numero (" + p + "). Cambialo, por ejemplo a .oferta1, en el HTML y en el CSS.";
+      if(/(^|[\s>+~])#\d/.test(p)) return "Un id no puede empezar por numero (" + p + ").";
+      if(/[.#]$/.test(p)) return "El selector " + p + " acaba en " + p.slice(-1) + " sin nombre detras.";
+      if(/[.#]\s/.test(p)) return "Despues del punto o de la almohadilla va el nombre pegado, sin espacio: .aviso, no . aviso";
+      if(/:\s/.test(p) && !/\(/.test(p)) return "El selector " + p + " lleva dos puntos: si es una pseudoclase va pegada (a:hover). Si es una declaracion, te falta la llave { antes.";
+      var prueba = p.replace(/::?(before|after|first-line|first-letter|placeholder|selection|marker)\b/gi, "") || "*";
+      try{ FRAG.querySelector(prueba); }
+      catch(e){ return "El selector " + p + " no es valido y el navegador ignora la regla entera."; }
+    }
+    return null;
+  }
+
+  // Revisa el CSS de fuente.slice(desde, hasta). soloDecls: el contenido de un atributo style.
+  function revisarCSS(fuente, desde, hasta, soloDecls){
+    var trozo = fuente.slice(desde, hasta), n = trozo.length, sal = [], i = 0, j;
+    function fallo(at, msg){ var lc = lineaColDe(fuente, desde + at); return {ok:false, msg:msg, linea:lc.linea, col:lc.col}; }
+    function lineaDeLocal(at){ return lineaColDe(fuente, desde + at).linea; }
+    // comentarios fuera, conservando posiciones
+    while(i < n){
+      if(trozo[i] === "/" && trozo[i+1] === "*"){
+        var fin = trozo.indexOf("*/", i + 2);
+        if(fin < 0) return fallo(i, "Este comentario no se cierra: un comentario empieza por /* y acaba por */. Todo lo que hay debajo se ha convertido en comentario.");
+        for(j=i;j<fin+2;j++) sal.push(trozo[j] === "\n" ? "\n" : " ");
+        i = fin + 2; continue;
+      }
+      if(trozo[i] === "*" && trozo[i+1] === "/") return fallo(i, "Aqui se cierra con */ un comentario que nunca se abrio con /*.");
+      sal.push(trozo[i]); i++;
+    }
+    var t = sal.join(""), pila = [], ctx = soloDecls ? "decls" : "reglas", ini = 0, reglas = 0, decls = 0, e, c;
+    for(i=0;i<n;i++){
+      c = t[i];
+      if(c === '"' || c === "'"){
+        var cierre = t.indexOf(c, i + 1), nl = t.indexOf("\n", i + 1);
+        if(cierre < 0 || (nl >= 0 && nl < cierre)) return fallo(i, "Estas comillas se abren y no se cierran en la misma linea.");
+        i = cierre; continue;
+      }
+      if(c === "{"){
+        if(soloDecls) return fallo(i, "Dentro del atributo style no van llaves: solo declaraciones, por ejemplo style=\"color: red;\"");
+        var bruto = t.slice(ini, i), sel = bruto.trim(), selIni = ini + (bruto.length - bruto.replace(/^\s+/, "").length);
+        if(ctx === "decls"){
+          var abierta = pila[pila.length - 1];
+          return fallo(abierta.at, "Esta regla no se cierra: falta la llave } antes de la regla siguiente (linea " + lineaDeLocal(i) + "). El navegador se come todo lo que viene detras.");
+        }
+        if(!sel) return fallo(i, "Hay una llave { sin selector delante.");
+        if(ctx === "keyframes"){
+          if(!/^(from|to|\d+(\.\d+)?%)(\s*,\s*(from|to|\d+(\.\d+)?%))*$/i.test(sel)) return fallo(selIni, "Dentro de @keyframes solo valen from, to o porcentajes como 50%.");
+          pila.push({at:i, ctx:ctx}); ctx = "decls";
+        } else if(sel.charAt(0) === "@"){
+          var nom = (sel.match(/^@(-webkit-)?([a-z-]+)/i) || [,"",""])[2].toLowerCase();
+          pila.push({at:i, ctx:ctx});
+          if(nom === "keyframes") ctx = "keyframes";
+          else if(nom === "font-face" || nom === "page") ctx = "decls";
+          else if(nom === "media" || nom === "supports" || nom === "container" || nom === "layer") ctx = "reglas";
+          else return fallo(selIni, "La regla " + sel.split(/\s/)[0] + " no existe o no se usa asi. Las normales son @media, @keyframes, @font-face e @import.");
+        } else {
+          var es = errorSelector(sel);
+          if(es) return fallo(selIni, es);
+          pila.push({at:i, ctx:ctx}); ctx = "decls"; reglas++;
+        }
+        ini = i + 1; continue;
+      }
+      if(c === "}"){
+        if(soloDecls) return fallo(i, "Dentro del atributo style no van llaves.");
+        if(!pila.length) return fallo(i, "Esta llave } sobra: cierra algo que no se habia abierto.");
+        if(ctx === "decls"){
+          e = revisarDeclaracion(t.slice(ini, i), ini);
+          if(e) return fallo(e.at, e.msg);
+          if(t.slice(ini, i).trim()) decls++;
+        } else if(t.slice(ini, i).trim()){
+          var suelto = t.slice(ini, i), sIni = ini + (suelto.length - suelto.replace(/^\s+/, "").length);
+          return fallo(sIni, "Aqui hay un selector sin sus llaves { }.");
+        }
+        ctx = pila.pop().ctx; ini = i + 1; continue;
+      }
+      if(c === ";"){
+        if(ctx === "decls"){
+          e = revisarDeclaracion(t.slice(ini, i), ini);
+          if(e) return fallo(e.at, e.msg);
+          if(t.slice(ini, i).trim()) decls++;
+        } else {
+          var tx = t.slice(ini, i), txIni = ini + (tx.length - tx.replace(/^\s+/, "").length);
+          if(tx.trim().charAt(0) !== "@"){
+            if(!tx.trim()) return fallo(i, "Este punto y coma esta fuera de cualquier regla y sobra.");
+            return fallo(txIni, "Esta declaracion esta fuera de una regla. Le falta el selector y la llave { delante, o la llave } de la regla de arriba esta cerrada antes de tiempo.");
+          }
+        }
+        ini = i + 1; continue;
+      }
+    }
+    if(soloDecls){
+      e = revisarDeclaracion(t.slice(ini), ini);
+      if(e) return fallo(e.at, e.msg);
+      if(t.slice(ini).trim()) decls++;
+    } else {
+      if(pila.length) return fallo(pila[pila.length - 1].at, "Esta llave { no se cierra nunca: falta la } del final de la regla.");
+      var resto = t.slice(ini);
+      if(resto.trim()){
+        var rIni = ini + (resto.length - resto.replace(/^\s+/, "").length);
+        return fallo(rIni, "Al final queda texto suelto: un selector necesita sus llaves { } con declaraciones dentro.");
+      }
+    }
+    return {ok:true, reglas:reglas, decls:decls};
+  }
+
+  // Pagina HTML entera: revisa cada <style> y cada atributo style="".
+  function revisarHTML(fuente){
+    var total = {ok:true, reglas:0, decls:0}, re = /<style\b[^>]*>/gi, m, r;
+    while((m = re.exec(fuente))){
+      var ini = m.index + m[0].length, fin = fuente.toLowerCase().indexOf("</style>", ini);
+      if(fin < 0){ var lc = lineaColDe(fuente, m.index); return {ok:false, msg:"La etiqueta <style> no se cierra: falta </style>.", linea:lc.linea, col:lc.col}; }
+      r = revisarCSS(fuente, ini, fin, false);
+      if(!r.ok) return r;
+      total.reglas += r.reglas; total.decls += r.decls;
+      re.lastIndex = fin;
+    }
+    var ra = /\sstyle\s*=\s*(["'])([\s\S]*?)\1/gi;
+    while((m = ra.exec(fuente))){
+      var a = m.index + m[0].indexOf(m[1]) + 1;
+      r = revisarCSS(fuente, a, a + m[2].length, true);
+      if(!r.ok) return r;
+      total.decls += r.decls;
+    }
+    var mlink = /<link\b[^>]*>/gi, l;
+    while((l = mlink.exec(fuente))){
+      if(/\bsrc\s*=/i.test(l[0]) && !/\bhref\s*=/i.test(l[0])){
+        var lc2 = lineaColDe(fuente, l.index);
+        return {ok:false, msg:"La etiqueta link indica el fichero con href, no con src: <link rel=\"stylesheet\" href=\"estilos.css\">", linea:lc2.linea, col:lc2.col};
+      }
+      if(/\bhref\s*=\s*["'][^"']*\.css/i.test(l[0]) && !/rel\s*=\s*["']?stylesheet/i.test(l[0])){
+        var lc3 = lineaColDe(fuente, l.index);
+        return {ok:false, msg:"A esta etiqueta link le falta rel=\"stylesheet\": sin eso el navegador no la usa como hoja de estilos.", linea:lc3.linea, col:lc3.col};
+      }
+    }
+    return total;
+  }
+
+  function editaHtml(){ return modo === "banco" || !!(EJERCICIOS[actual] && EJERCICIOS[actual].editaHtml); }
+  function analizar(fuente){
+    var s = fuente || "";
+    if(!s.trim()) return {ok:false, msg:"Esta vacio. Escribe algo.", linea:null, col:null};
+    return editaHtml() ? revisarHTML(s) : revisarCSS(s, 0, s.length, false);
+  }
+
+  // ---------- vistas previas ----------
+  function paginaDe(ej, fuente, esHtml){
+    if(esHtml) return fuente;
+    return '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><style>\n' + fuente.replace(/<\/style/gi, "<\\/style") + '\n</style></head><body>\n' + ((ej && ej.html) || "") + '\n</body></html>';
+  }
+  function pintarEn(marco, html){
+    var d = marco.contentDocument;
+    d.open(); d.write(html); d.close();
+    // los enlaces de ejemplo no navegan
+    d.addEventListener("click", function(ev){ var a = ev.target.closest && ev.target.closest("a"); if(a) ev.preventDefault(); });
+    ajustarAlto(marco);
+    return d;
+  }
+  function ajustarAlto(marco){
+    var d = marco.contentDocument, h = 0;
+    try{
+      var b = d.body, cs = d.defaultView.getComputedStyle(b);
+      h = Math.ceil(b.getBoundingClientRect().height + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom)) + 12;
+    }catch(e){}
+    marco.style.height = Math.min(380, Math.max(70, h)) + "px";
+  }
+
+  // ---------- estado ----------
+  var estado = {};
+  var modo = "practica";
+  var actual = 0;
+  var cola = null;          // lista de indices para repaso
+  var colaPos = 0;
+  var examen = null;        // {indices, pos, puntos, t0, timer, fallados}
+  var descargas = null;
+  var sesion = null;        // {cola, pos, hechos, objetivo, t0, timer}
+  var INTERVALOS = [1, 2, 4, 8, 15, 30];
+  var DIA = 86400000;
+  var BANCO_INICIAL = PAGINA('  <style>\n    /* Pega aqui tu practica entera, o solo el CSS dentro de esta etiqueta style */\n    h1 {\n      color: navy;\n    }\n  </style>\n', '  <h1>Mi practica</h1>\n  <p>Cambia esto por lo tuyo.</p>\n');
+  var textoBanco = BANCO_INICIAL;
+
+  function $(id){ return document.getElementById(id); }
+  var elMapa=$("mapa"), elTitulo=$("titulo-ej"), elTipo=$("tipo-ej"), elEnun=$("enunciado"),
+      elReq=$("requisitos"), elPista=$("pista"), elEditorZona=$("zona-editor"), elEditor=$("editor"),
+      elLineas=$("zona-lineas"), elVer=$("veredicto"), elPos=$("pos"), elCab=$("cab-trabajo"),
+      bPista=$("btn-pista"), bSol=$("btn-solucion"), bRepaso=$("btn-repaso"), bComp=$("btn-comprobar"),
+      bReset=$("btn-reset"), bSig=$("btn-siguiente"), bDesc=$("btn-descargar"), elSync=$("sync"),
+      elBarraEx=$("barra-examen"), elCajaVista=$("caja-vista"), elVistaTu=$("vista-tu"), elVistaRes=$("vista-resumen"), elVistaNota=$("vista-nota"),
+      elCajaObjetivo=$("caja-objetivo"), elVistaObjetivo=$("vista-objetivo"), elModeloTit=$("modelo-tit"),
+      elAyuda=$("botonera-ayuda"), elSimbolos=$("simbolos"), elFichero=$("nombre-fichero"),
+      elBarraHoy=$("barra-hoy"), elCriterios=$("criterios"), elVeredictoListo=$("veredicto-listo"),
+      elMapaCaja=$("mapa-caja"), elAyudaModo=$("ayuda-modo"), elGuia=$("guia"),
+      elSemaforo=$("semaforo"), elSemaforoTxt=$("semaforo-txt"), elCajaReq=$("caja-requisitos"),
+      elHoyProgreso=$("hoy-progreso"), elPaso1=$("paso-1"), elPaso2=$("paso-2");
+
+  var AYUDA_MODO = {
+    aprender:"Empieza por aqui si no has visto CSS nunca. Trece lecciones cortas, en orden, cada una con sus ejercicios al final.",
+    hoy:"Tu rutina diaria. La maquina ya ha elegido que te toca hoy: repasos que tocan mas ejercicios nuevos. Cuando acaben los seis, has terminado por hoy.",
+    practica:"Todos los ejercicios a tu aire. Pulsa un cuadrito del mapa para saltar al que quieras.",
+    examen:"Seis ejercicios al azar con el reloj corriendo. Sin pistas ni solucion, igual que el dia del examen.",
+    banco:"Pega aqui la pagina de tu practica real (HTML con su CSS dentro), revisala y descargala."
+  };
+
+  // ---------- persistencia, separada por persona ----------
+  // Cada persona tiene su propia clave en el almacen del navegador, y no hay
+  // copia en ningun servidor: el progreso no sale de este equipo.
+  var CLAVE_VIEJA = "taller-css-progreso";
+  var CLAVE_ACTIVO = "taller-css-persona";
+  var CLAVE_LISTA = "taller-css-personas";
+  var persona = "Yo";
+
+  function leerJSON(clave, porDefecto){
+    try{ var raw = localStorage.getItem(clave); return raw ? (JSON.parse(raw) || porDefecto) : porDefecto; }
+    catch(e){ return porDefecto; }
+  }
+  function escribir(clave, valor){
+    try{ localStorage.setItem(clave, typeof valor === "string" ? valor : JSON.stringify(valor)); }catch(e){}
+  }
+  function ranura(nombre){ return "taller-css-progreso::" + String(nombre).toLowerCase().replace(/\s+/g," ").trim(); }
+  function listaPersonas(){
+    var l = leerJSON(CLAVE_LISTA, null);
+    if(!l || !l.length) l = [persona];
+    return l;
+  }
+  function anotarPersona(nombre){
+    var l = listaPersonas(), i;
+    for(i=0;i<l.length;i++){ if(l[i].toLowerCase() === nombre.toLowerCase()) return; }
+    l.push(nombre);
+    escribir(CLAVE_LISTA, l.slice(0,12));
+  }
+  function elegirPersona(){
+    try{ persona = localStorage.getItem(CLAVE_ACTIVO) || "Yo"; }catch(e){ persona = "Yo"; }
+    anotarPersona(persona);
+    // El progreso de antes de que hubiera personas pasa a ser el de quien entra primero.
+    try{
+      var viejo = localStorage.getItem(CLAVE_VIEJA);
+      if(viejo && !localStorage.getItem(ranura(persona))){
+        localStorage.setItem(ranura(persona), viejo);
+        localStorage.removeItem(CLAVE_VIEJA);
+      }
+    }catch(e){}
+  }
+
+  function leerLocal(){
+    estado = {};
+    try{ var raw = localStorage.getItem(ranura(persona)); if(raw) estado = JSON.parse(raw) || {}; }catch(e){ estado = {}; }
+    if(!estado.__meta) estado.__meta = {};
+    var m = estado.__meta;
+    if(!("mejorNota" in m)) m.mejorNota = null;
+    if(!("mejorTiempo" in m)) m.mejorTiempo = null;
+    if(!m.notas) m.notas = [];
+    if(!("racha" in m)) m.racha = 0;
+    if(!("ultimaSesion" in m)) m.ultimaSesion = null;
+  }
+
+  function hoyISO(t){ var d = new Date(t || Date.now()); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+  function esAyer(iso){
+    if(!iso) return false;
+    return iso === hoyISO(Date.now() - DIA);
+  }
+  function guardarLocal(){
+    try{ localStorage.setItem(ranura(persona), JSON.stringify(estado)); }catch(e){}
+  }
+  function guardar(){ guardarLocal(); }
+  function est(id){
+    if(!estado[id]) estado[id] = {hecho:false, intentos:0, limpio:false, nivel:0, proximo:0};
+    if(typeof estado[id].nivel !== "number") estado[id].nivel = estado[id].hecho ? 1 : 0;
+    if(typeof estado[id].proximo !== "number") estado[id].proximo = 0;
+    return estado[id];
+  }
+
+  // repeticion espaciada: acierto limpio sube nivel, fallo lo baja
+  function programar(id, limpio){
+    var s = est(id);
+    if(limpio) s.nivel = Math.min(s.nivel + 1, INTERVALOS.length);
+    else s.nivel = Math.max(s.nivel - 1, 0);
+    var dias = INTERVALOS[Math.max(0, Math.min(s.nivel - 1, INTERVALOS.length - 1))];
+    if(s.nivel === 0) dias = 1;
+    s.proximo = Date.now() + dias * DIA;
+  }
+  function vencidos(){
+    var ahora = Date.now(), v = [];
+    EJERCICIOS.forEach(function(e,i){
+      var s = estado[e.id];
+      if(s && s.hecho && (s.proximo || 0) <= ahora) v.push(i);
+    });
+    return v;
+  }
+  function nuevos(){
+    var n = [];
+    EJERCICIOS.forEach(function(e,i){ var s = estado[e.id]; if(!s || !s.hecho) n.push(i); });
+    return n;
+  }
+
+  // ---------- marcador y mapa ----------
+  function pintarMarcador(){
+    var hechos=0, limpios=0;
+    EJERCICIOS.forEach(function(e){ var s=estado[e.id]; if(s && s.hecho){ hechos++; if(s.limpio) limpios++; } });
+    $("n-hechos").textContent = hechos;
+    $("n-total").textContent = EJERCICIOS.length;
+    $("n-limpios").textContent = limpios;
+    var mn = estado.__meta && estado.__meta.mejorNota;
+    $("n-nota").textContent = (mn || mn === 0) ? String(mn).replace(".", ",") : "–";
+    $("chip-racha").textContent = String((estado.__meta && estado.__meta.racha) || 0);
+  }
+
+  function pintarMapa(){
+    var bloques = [];
+    EJERCICIOS.forEach(function(e,i){
+      var b = null, k;
+      for(k=0;k<bloques.length;k++){ if(bloques[k].nombre===e.bloque){ b=bloques[k]; break; } }
+      if(!b){ b={nombre:e.bloque, items:[]}; bloques.push(b); }
+      b.items.push({e:e, i:i});
+    });
+    elMapa.innerHTML = "";
+    bloques.forEach(function(b){
+      var hechos = 0;
+      b.items.forEach(function(it){ var s=estado[it.e.id]; if(s && s.hecho) hechos++; });
+      var div = document.createElement("div");
+      div.className = "bloque";
+      var ht = document.createElement("div"); ht.className = "bt";
+      var s1 = document.createElement("span"); s1.textContent = b.nombre;
+      var s2 = document.createElement("span"); s2.textContent = hechos + "/" + b.items.length;
+      ht.appendChild(s1); ht.appendChild(s2); div.appendChild(ht);
+      var pips = document.createElement("div"); pips.className = "pips";
+      b.items.forEach(function(it,k){
+        var btn = document.createElement("button");
+        btn.className = "pip"; btn.type = "button"; btn.textContent = String(k+1);
+        btn.title = it.e.titulo;
+        var s = estado[it.e.id];
+        if(s && s.hecho) btn.setAttribute("data-state","done");
+        else if(s && s.intentos > 0) btn.setAttribute("data-state","fallado");
+        if(it.i === actual && modo === "practica") btn.setAttribute("aria-current","true");
+        btn.addEventListener("click", function(){ cola = null; irModo("practica"); ir(it.i); });
+        pips.appendChild(btn);
+      });
+      div.appendChild(pips);
+      elMapa.appendChild(div);
+    });
+  }
+
+  // ---------- veredicto y arbol ----------
+  function limpiarVeredicto(){ elVer.removeAttribute("data-tipo"); elVer.innerHTML = ""; }
+
+  function veredicto(tipo, titulo, cuerpo, extra){
+    elVer.innerHTML = "";
+    var t = document.createElement("div"); t.className = "titulo"; t.textContent = titulo; elVer.appendChild(t);
+    var c = document.createElement("div"); c.textContent = cuerpo; elVer.appendChild(c);
+    if(extra) elVer.appendChild(extra);
+    elVer.setAttribute("data-tipo", tipo);
+  }
+
+  function senalDeError(fuente, linea, col, crudo){
+    var caja = document.createElement("div");
+    if(linea){
+      var lineas = fuente.split("\n");
+      var txt = lineas[linea-1];
+      if(typeof txt === "string"){
+        var pre = document.createElement("div"); pre.className = "senal";
+        pre.appendChild(document.createTextNode(linea + " | " + txt + "\n"));
+        if(col){
+          var relleno = new Array(String(linea).length + 3 + Math.max(0, col-1)).join(" ") + " ";
+          var flecha = document.createElement("span"); flecha.className = "cursor";
+          flecha.textContent = relleno + "^ aqui";
+          pre.appendChild(flecha);
+        }
+        caja.appendChild(pre);
+      }
+    }
+    if(crudo){
+      var r = document.createElement("div"); r.className = "crudo";
+      r.textContent = "Mensaje original del parser: " + crudo;
+      caja.appendChild(r);
+    }
+    return caja.childNodes.length ? caja : null;
+  }
+
+  function pintarVista(fuente, conError){
+    var ej = (modo === "banco") ? null : EJERCICIOS[actual];
+    elCajaVista.hidden = false;
+    var d = pintarEn(elVistaTu, paginaDe(ej, fuente, editaHtml()));
+    elVistaNota.hidden = !conError;
+    return d;
+  }
+  function pintarObjetivo(ej){
+    if(!ej || ej.tipo !== "editor" || !ej.solucion){ elCajaObjetivo.hidden = true; return; }
+    elCajaObjetivo.hidden = false;
+    pintarEn(elVistaObjetivo, paginaDe(ej, ej.solucion, !!ej.editaHtml));
+  }
+  function resumenVista(r){
+    elVistaRes.textContent = r && r.ok ? (r.reglas + (r.reglas === 1 ? " regla" : " reglas") + " \u00b7 " + r.decls + (r.decls === 1 ? " declaracion" : " declaraciones")) : "";
+  }
+
+  function pintarRequisitos(ej, resultados, envivo){
+    elReq.innerHTML = "";
+    if(!ej || ej.tipo !== "editor" || !ej.checks) return;
+    ej.checks.forEach(function(c,i){
+      var li = document.createElement("li");
+      var mk = document.createElement("span"); mk.className = "mk";
+      if(resultados){
+        if(resultados[i]){ mk.textContent = "✓"; li.setAttribute("data-ok","si"); }
+        else if(envivo){ mk.textContent = String(i+1); li.setAttribute("data-ok","casi"); }
+        else { mk.textContent = "✗"; li.setAttribute("data-ok","no"); }
+      }
+      else mk.textContent = String(i+1);
+      var tx = document.createElement("span"); tx.textContent = c.msg;
+      li.appendChild(mk); li.appendChild(tx); elReq.appendChild(li);
+    });
+  }
+
+  // ---------- modo aprender ----------
+  var leccionActual = 0;
+  var elVistaAprender=$("vista-aprender"), elVistaTaller=$("vista-taller"), elTemario=$("temario"),
+      elLeccionCuerpo=$("leccion-cuerpo"), elLeccionTitulo=$("leccion-titulo"), elLeccionN=$("leccion-n"),
+      elTemarioProgreso=$("temario-progreso");
+
+  function leccionesVistas(){
+    var m = estado.__meta || {};
+    if(!m.lecciones) m.lecciones = {};
+    return m.lecciones;
+  }
+  function pintarTemario(){
+    var vistas = leccionesVistas(), n = 0;
+    elTemario.innerHTML = "";
+    LECCIONES.forEach(function(l, i){
+      if(vistas[l.id]) n++;
+      var li = document.createElement("li");
+      li.setAttribute("data-visto", vistas[l.id] ? "si" : "no");
+      if(i === leccionActual) li.setAttribute("aria-current","true");
+      var b = document.createElement("button");
+      b.type = "button";
+      var num = document.createElement("span"); num.className = "num";
+      num.textContent = vistas[l.id] ? "✓" : String(i+1);
+      var tt = document.createElement("span"); tt.className = "tt";
+      var t1 = document.createElement("b"); t1.textContent = l.titulo;
+      var t2 = document.createElement("span"); t2.textContent = l.resumen;
+      tt.appendChild(t1); tt.appendChild(t2);
+      b.appendChild(num); b.appendChild(tt);
+      b.addEventListener("click", function(){ abrirLeccion(i); });
+      li.appendChild(b); elTemario.appendChild(li);
+    });
+    elTemarioProgreso.textContent = n + "/" + LECCIONES.length;
+  }
+  function abrirLeccion(i){
+    leccionActual = (i + LECCIONES.length) % LECCIONES.length;
+    var l = LECCIONES[leccionActual];
+    elLeccionN.textContent = "Leccion " + (leccionActual+1) + " de " + LECCIONES.length;
+    elLeccionTitulo.textContent = l.titulo;
+    elLeccionCuerpo.innerHTML = "";
+    l.cuerpo.forEach(function(bloque){
+      if(bloque.p){
+        var p = document.createElement("p"); p.textContent = bloque.p; elLeccionCuerpo.appendChild(p);
+      } else if(bloque.code){
+        var caja = document.createElement("div");
+        var tit = document.createElement("div"); tit.className = "ejemplo-tit"; tit.textContent = "Ejemplo";
+        var pre = document.createElement("pre"); pre.className = "ejemplo"; pre.textContent = bloque.code;
+        caja.appendChild(tit); caja.appendChild(pre); elLeccionCuerpo.appendChild(caja);
+      } else if(bloque.fijate){
+        var ul = document.createElement("ul"); ul.className = "fijate";
+        bloque.fijate.forEach(function(t){ var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+        elLeccionCuerpo.appendChild(ul);
+      } else if(bloque.ojo){
+        var o = document.createElement("div"); o.className = "ojo"; o.innerHTML = bloque.ojo; elLeccionCuerpo.appendChild(o);
+      }
+    });
+    var bp = $("leccion-practicar");
+    bp.textContent = l.ejercicios.length ? "Lo he entendido, practicar esto" : "Lo he entendido, empezar la leccion 2";
+    pintarTemario();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+  function marcarLeccionVista(){
+    var l = LECCIONES[leccionActual];
+    leccionesVistas()[l.id] = true;
+    guardar(); pintarTemario();
+  }
+  function practicarLeccion(){
+    var l = LECCIONES[leccionActual];
+    marcarLeccionVista();
+    if(!l.ejercicios.length){ abrirLeccion(leccionActual+1); return; }
+    var idx = [];
+    l.ejercicios.forEach(function(id){
+      EJERCICIOS.forEach(function(e,i){ if(e.id === id) idx.push(i); });
+    });
+    if(!idx.length){ abrirLeccion(leccionActual+1); return; }
+    cola = idx; colaPos = 0;
+    irModo("practica");
+    ir(idx[0]);
+    elAyudaModo.textContent = "Ejercicios de la leccion " + (leccionActual+1) + ": " + l.titulo + ". Cuando acabes, vuelve a Aprender de cero para la siguiente.";
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  // ---------- revision en vivo mientras escribe ----------
+  var tempo = null;
+  function semaforo(estadoTxt, etiqueta){
+    elSemaforo.setAttribute("data-estado", estadoTxt);
+    elSemaforoTxt.textContent = etiqueta;
+  }
+  function revisarEnVivo(){
+    if(elEditorZona.hidden) return;
+    var fuente = elEditor.value;
+    var ej = (modo !== "banco") ? EJERCICIOS[actual] : null;
+    if(!fuente.trim()){
+      semaforo("vacio", "Escribe algo");
+      pintarVista(fuente, false); resumenVista(null);
+      if(ej && ej.tipo === "editor") pintarRequisitos(ej, null);
+      return;
+    }
+    var r = analizar(fuente);
+    var d = pintarVista(fuente, !r.ok);
+    resumenVista(r);
+    if(!r.ok) semaforo("mal", r.linea ? ("Error en la linea " + r.linea) : "Hay un error");
+    else semaforo("ok", "Sin errores");
+    if(!ej || ej.tipo !== "editor") return;
+    var resultados = ej.checks.map(function(c){ try{ return !!c.test(d, fuente); }catch(e){ return false; } });
+    pintarRequisitos(ej, resultados, true);
+  }
+  function revisarConRetardo(){
+    if(tempo) clearTimeout(tempo);
+    tempo = setTimeout(revisarEnVivo, 350);
+  }
+
+  // ---------- navegacion de modos ----------
+  function irModo(m){
+    modo = m;
+    $("m-aprender").setAttribute("aria-pressed", String(m==="aprender"));
+    $("m-hoy").setAttribute("aria-pressed", String(m==="hoy"));
+    $("m-practica").setAttribute("aria-pressed", String(m==="practica"));
+    $("m-examen").setAttribute("aria-pressed", String(m==="examen"));
+    $("m-banco").setAttribute("aria-pressed", String(m==="banco"));
+    elVistaAprender.hidden = (m !== "aprender");
+    elVistaTaller.hidden = (m === "aprender");
+    elMapaCaja.hidden = (m !== "practica");
+    $("btn-saltar").hidden = (m === "banco");
+    elBarraEx.hidden = (m !== "examen");
+    elBarraHoy.hidden = (m !== "hoy");
+    elAyuda.hidden = (m !== "practica" && m !== "hoy");
+    elAyudaModo.textContent = AYUDA_MODO[m] || "";
+    bSol.hidden = (m !== "practica");
+    bRepaso.hidden = (m !== "practica");
+    bPista.hidden = (m === "examen" || m === "banco");
+    bDesc.hidden = (m !== "banco");
+    if(m !== "examen" && examen){ pararCrono(); examen = null; }
+    if(m !== "hoy" && sesion){ pararCronoHoy(); sesion = null; }
+    if(m === "banco") abrirBanco();
+  }
+
+  function abrirBanco(){
+    limpiarVeredicto();
+    elPaso1.textContent = "Para que sirve";
+    elPaso2.textContent = "Pega tu pagina aqui";
+    elTitulo.textContent = "Tu propia pagina";
+    elTipo.textContent = "revisor libre";
+    elCajaReq.hidden = true;
+    $("caja-modelo").hidden = true;
+    elCajaObjetivo.hidden = true;
+    bSig.hidden = true; bComp.hidden = false;
+    bComp.textContent = "Revisar mi pagina";
+    elEnun.textContent = "Pega aqui la pagina de tu practica, de un ejercicio de clase o de un examen antiguo: el HTML entero con el CSS dentro de una etiqueta style. El revisor te dice la linea exacta de cualquier cosa que el navegador se saltaria, y abajo ves como queda.";
+    elReq.innerHTML = "";
+    elPista.hidden = true;
+    elCab.textContent = "Mi pagina";
+    elFichero.textContent = "index.html";
+    elEditorZona.hidden = false; elLineas.hidden = true;
+    elEditor.value = textoBanco;
+    bReset.hidden = false; bReset.textContent = "Volver al ejemplo";
+    $("btn-saltar").hidden = true;
+    actualizarPos();
+    revisarEnVivo();
+    pintarMapa();
+  }
+
+  // ---------- practica ----------
+  function ir(i){
+    if(modo === "banco") return;
+    actual = (i + EJERCICIOS.length) % EJERCICIOS.length;
+    var ej = EJERCICIOS[actual];
+    limpiarVeredicto();
+    elPista.hidden = true; bPista.textContent = "Ver pista";
+    elTitulo.textContent = ej.titulo;
+    elTipo.textContent = ej.tipo === "editor" ? (ej.editaHtml ? "escribe la pagina" : "escribe el CSS") : (ej.tipo === "elige" ? "elige la respuesta" : "localiza el error");
+    elEnun.textContent = ej.enunciado;
+    elFichero.textContent = ej.editaHtml ? "index.html" : "estilos.css";
+    bReset.textContent = "Empezar este de cero";
+    bSig.hidden = true;
+    bReset.hidden = false;
+
+    if(ej.tipo === "editor"){
+      elPaso1.textContent = "Paso 1 \u00b7 Lee lo que pide";
+      elPaso2.textContent = "Paso 2 \u00b7 Escribelo aqui";
+      elCab.textContent = ej.editaHtml ? "Tu pagina" : "Tu CSS";
+      elCajaReq.hidden = false;
+      if(ej.modelo){ elModeloTit.textContent = "Modelo \u00b7 copialo tecleando, no con el raton"; $("modelo").textContent = ej.modelo; $("caja-modelo").hidden = false; }
+      else $("caja-modelo").hidden = true;
+      elEditorZona.hidden = false; elLineas.hidden = true;
+      bComp.hidden = false; bComp.textContent = "Comprobar mi CSS";
+      elEditor.value = ej.inicio || "";
+      pintarRequisitos(ej, null);
+      elPista.textContent = ej.pista || "";
+      pintarObjetivo(ej);
+      actualizarPos();
+      revisarEnVivo();
+    } else {
+      var elige = ej.tipo === "elige";
+      elPaso1.textContent = elige ? "Paso 1 \u00b7 Lee el codigo" : "Paso 1 \u00b7 Lee el codigo";
+      elPaso2.textContent = elige ? "Paso 2 \u00b7 Pulsa la respuesta" : "Paso 2 \u00b7 Pulsa la linea del fallo";
+      elCab.textContent = "";
+      elCajaReq.hidden = true;
+      if(elige && ej.codigo){ elModeloTit.textContent = "El codigo"; $("modelo").textContent = ej.codigo; $("caja-modelo").hidden = false; }
+      else $("caja-modelo").hidden = true;
+      elCajaObjetivo.hidden = true;
+      elCajaVista.hidden = true;
+      elEditorZona.hidden = true; elLineas.hidden = false;
+      bComp.hidden = true; bReset.hidden = true;
+      elReq.innerHTML = "";
+      elPista.textContent = ej.fallo || "";
+      pintarLineas(ej);
+    }
+    pintarMapa();
+    pintarMarcador();
+  }
+
+  function pintarLineas(ej){
+    elLineas.innerHTML = "";
+    elLineas.setAttribute("data-tipo", ej.tipo);
+    (ej.opciones || ej.lineas).forEach(function(txt, idx){
+      var li = document.createElement("li");
+      var b = document.createElement("button");
+      b.className = "linea"; b.type = "button"; b.textContent = txt;
+      b.addEventListener("click", function(){ elegirLinea(ej, li, idx); });
+      li.appendChild(b); elLineas.appendChild(li);
+    });
+  }
+
+  function avanzarTrasAcierto(ej, limpio){
+    if(ej){ programar(ej.id, limpio); guardar(); pintarCriterios(); }
+    bComp.hidden = true;
+    bSig.hidden = false;
+    bSig.textContent = (modo === "examen") ? "Siguiente pregunta" : (modo === "hoy" ? "Siguiente de la sesion" : "Siguiente ejercicio");
+    if(modo === "hoy" && sesion){ sesion.hechos++; pintarSesion(); }
+  }
+
+  function elegirLinea(ej, li, idx){
+    var s = est(ej.id);
+    var primerIntento = (s.intentosSesion || 0) === 0;
+    s.intentosSesion = (s.intentosSesion || 0) + 1;
+    if(!s.hecho) s.intentos++;
+    if(modo === "examen") examen.intentos++;
+    if(idx === (ej.tipo === "elige" ? ej.correcta : ej.mala)){
+      Array.prototype.forEach.call(elLineas.children, function(n){ n.removeAttribute("data-pick"); });
+      li.setAttribute("data-pick","bien");
+      if(!s.hecho){ s.hecho = true; s.limpio = (s.intentos === 1); }
+      veredicto("ok","Correcto", ej.explicacion);
+      if(modo === "examen") anotarExamen(true);
+      s.intentosSesion = 0;
+      avanzarTrasAcierto(ej, primerIntento);
+    } else {
+      li.setAttribute("data-pick","mal");
+      if(ej.tipo === "elige") veredicto("mal","Esa no es", ej.fallo || "Piensalo otra vez.");
+      else veredicto("mal","Esa linea esta bien","Sigue buscando: fijate en los dos puntos, el punto y coma, las unidades y como se escriben los nombres.");
+      if(modo === "examen") anotarExamen(false);
+    }
+    guardar(); pintarMapa(); pintarMarcador();
+  }
+
+  function comprobar(){
+    var fuente = elEditor.value;
+
+    if(modo === "banco"){
+      textoBanco = fuente;
+      var rb = analizar(fuente);
+      pintarVista(fuente, !rb.ok); resumenVista(rb);
+      if(rb.ok){
+        veredicto("ok","Sin errores","El revisor no encuentra nada que el navegador se vaya a saltar. Ahora compara la vista de abajo con lo que pide el enunciado, punto por punto.");
+      } else {
+        veredicto("mal", rb.linea ? ("Error en la linea " + rb.linea + (rb.col ? ", columna " + rb.col : "")) : "Hay un error",
+                  rb.msg, senalDeError(fuente, rb.linea, rb.col, null));
+      }
+      return;
+    }
+
+    var ej = EJERCICIOS[actual];
+    if(ej.tipo !== "editor") return;
+    var s = est(ej.id);
+    var primerIntento = (s.intentosSesion || 0) === 0;
+    s.intentosSesion = (s.intentosSesion || 0) + 1;
+    if(!s.hecho) s.intentos++;
+    if(modo === "examen") examen.intentos++;
+
+    var r = analizar(fuente);
+    var d = pintarVista(fuente, !r.ok);
+    resumenVista(r);
+    var resultados = ej.checks.map(function(c){ try{ return !!c.test(d, fuente); }catch(e){ return false; } });
+    if(!r.ok){
+      pintarRequisitos(ej, resultados);
+      veredicto("mal", r.linea ? ("Error en la linea " + r.linea + (r.col ? ", columna " + r.col : "")) : "Hay un error",
+                r.msg, senalDeError(fuente, r.linea, r.col, null));
+      if(modo === "examen") anotarExamen(false);
+      guardar(); pintarMapa(); return;
+    }
+    pintarRequisitos(ej, resultados);
+    var fallan = 0;
+    resultados.forEach(function(x){ if(!x) fallan++; });
+    if(fallan === 0){
+      if(!s.hecho){ s.hecho = true; s.limpio = (s.intentos === 1); }
+      veredicto("ok","Correcto y completo","Sin errores y la pagina queda como pide el enunciado. Asi es como tiene que llegar a la entrega.");
+      if(modo === "examen") anotarExamen(true);
+      s.intentosSesion = 0;
+      avanzarTrasAcierto(ej, primerIntento);
+    } else {
+      veredicto("mal","Sin errores, pero incompleto","El navegador entiende todo lo que has escrito, pero la pagina aun no queda como se pide: " + fallan + " requisito" + (fallan>1?"s":"") + " sin cumplir. Mira la lista de la izquierda.");
+      if(modo === "examen") anotarExamen(false);
+    }
+    guardar(); pintarMapa(); pintarMarcador();
+  }
+
+  // ---------- repaso ----------
+  function iniciarRepaso(){
+    var pend = [];
+    EJERCICIOS.forEach(function(e,i){ var s=estado[e.id]; if(!s || !s.hecho) pend.push(i); });
+    if(!pend.length){
+      irModo("practica");
+      veredicto("ok","No queda nada pendiente","Los " + EJERCICIOS.length + " ejercicios estan resueltos. Prueba el modo Examen para cronometrarte, o revisa tu practica real en Mi pagina.");
+      return;
+    }
+    cola = pend; colaPos = 0;
+    irModo("practica");
+    ir(cola[0]);
+  }
+  function siguienteRepaso(){
+    if(!cola) return;
+    colaPos++;
+    var quedan = cola.filter(function(i){ var s=estado[EJERCICIOS[i].id]; return !s || !s.hecho; });
+    if(!quedan.length){
+      cola = null;
+      veredicto("ok","Bloque terminado","Has resuelto todos los ejercicios de esta tanda. Vuelve a Aprender de cero para la siguiente leccion.");
+      return;
+    }
+    cola = quedan; colaPos = 0;
+    ir(cola[0]);
+  }
+
+  // ---------- sesion de hoy ----------
+  function iniciarSesion(){
+    var v = vencidos(), n = nuevos(), cola = [];
+    mezclar(v);
+    cola = v.slice(0, 4);
+    var faltan = 6 - cola.length;
+    cola = cola.concat(n.slice(0, Math.max(faltan, 2)));
+    if(!cola.length) cola = mezclar(EJERCICIOS.map(function(e,i){ return i; })).slice(0,4);
+    sesion = {cola:cola, pos:0, hechos:0, objetivo:cola.length, t0:Date.now(), timer:null, cerrada:false};
+    irModo("hoy");
+    sesion.timer = setInterval(pintarCronoHoy, 500);
+    pintarSesion();
+    ir(cola[0]);
+  }
+  function pararCronoHoy(){ if(sesion && sesion.timer){ clearInterval(sesion.timer); sesion.timer = null; } }
+  function pintarCronoHoy(){
+    if(!sesion) return;
+    var s = Math.floor((Date.now()-sesion.t0)/1000), mm = Math.floor(s/60), ss = s%60;
+    $("hoy-t").textContent = (mm<10?"0":"")+mm+":"+(ss<10?"0":"")+ss;
+  }
+  function pintarSesion(){
+    if(!sesion) return;
+    $("hoy-n").textContent = sesion.hechos + "/" + sesion.objetivo;
+    $("hoy-racha").textContent = (estado.__meta.racha || 0) + (estado.__meta.racha === 1 ? " dia" : " dias");
+    $("hoy-vencidos").textContent = String(vencidos().length);
+    $("sub-hoy").textContent = sesion.objetivo + " ejercicios, 15 min";
+    elHoyProgreso.style.transform = "scaleX(" + (sesion.hechos / Math.max(1, sesion.objetivo)) + ")";
+    pintarCronoHoy();
+  }
+  function siguienteSesion(){
+    if(!sesion) return;
+    sesion.pos++;
+    if(sesion.pos >= sesion.cola.length){ cerrarSesion(); return; }
+    pintarSesion();
+    ir(sesion.cola[sesion.pos]);
+  }
+  function cerrarSesion(){
+    if(!sesion || sesion.cerrada) return;
+    sesion.cerrada = true;
+    var segs = Math.floor((Date.now()-sesion.t0)/1000), mm = Math.floor(segs/60), ss = segs%60;
+    var tiempo = (mm<10?"0":"")+mm+":"+(ss<10?"0":"")+ss;
+    var hechos = sesion.hechos, objetivo = sesion.objetivo;
+    pararCronoHoy();
+    var m = estado.__meta, hoy = hoyISO();
+    if(m.ultimaSesion !== hoy){
+      m.racha = esAyer(m.ultimaSesion) ? (m.racha || 0) + 1 : 1;
+      m.ultimaSesion = hoy;
+    }
+    guardar();
+    sesion = null;
+    irModo("practica");
+    elTitulo.textContent = "Sesion terminada";
+    elTipo.textContent = "resultado del dia";
+    elEnun.textContent = hechos + " de " + objetivo + " ejercicios resueltos en " + tiempo + ". Racha: " + m.racha + (m.racha===1?" dia":" dias") + " seguidos. Los que has acertado a la primera no vuelven a salir hasta dentro de unos dias; los fallados vuelven manana.";
+    elReq.innerHTML = "";
+    elEditorZona.hidden = true; elLineas.hidden = true;
+    bComp.hidden = true; bReset.hidden = true;
+    veredicto("ok","Hecho por hoy", "Manana te tocan " + vencidos().length + " repasos. Si te quedan ganas, tirate un examen cronometrado.");
+    pintarCriterios(); pintarMarcador(); pintarMapa();
+  }
+
+  // ---------- termometro de preparacion ----------
+  function pintarCriterios(){
+    var m = estado.__meta || {};
+    var total = EJERCICIOS.length;
+    var resueltos = 0, asentados = 0;
+    EJERCICIOS.forEach(function(e){
+      var s = estado[e.id];
+      if(s && s.hecho){ resueltos++; if((s.nivel||0) >= 3) asentados++; }
+    });
+    var notasAltas = (m.notas || []).filter(function(n){ return parseFloat(n) >= 9; }).length;
+    var racha = m.racha || 0;
+    var meta3 = Math.max(1, total - 4);
+
+    var defs = [
+      {q:"Has resuelto todo el temario", v:resueltos + "/" + total, p:resueltos/total,
+       pista:"Cada ejercicio cubre un fallo tipico distinto. Ninguno puede quedarse sin tocar."},
+      {q:"Lo tienes asentado, no aprobado de memoria", v:asentados + "/" + meta3, p:asentados/meta3,
+       pista:"Un ejercicio se asienta cuando lo aciertas a la primera en tres dias distintos. Eso lo lleva la sesion de hoy sola."},
+      {q:"Aguantas el reloj", v:notasAltas + "/3 examenes con 9 o mas", p:notasAltas/3,
+       pista:"En el examen no fallaras por saber menos, fallaras por ir con prisa. Tres examenes de 6 preguntas con 9 o mas."},
+      {q:"Has mantenido la constancia", v:racha + "/5 dias seguidos", p:racha/5,
+       pista:"Cinco dias de 15 minutos fijan mas que cinco horas la vispera. La racha se rompe si te saltas un dia."}
+    ];
+
+    elCriterios.innerHTML = "";
+    var listos = 0;
+    defs.forEach(function(d){
+      var pct = Math.max(0, Math.min(1, d.p));
+      if(pct >= 1) listos++;
+      var li = document.createElement("li");
+      li.className = "criterio";
+      li.setAttribute("data-listo", pct >= 1 ? "si" : "no");
+      var ct = document.createElement("div"); ct.className = "ct";
+      var q = document.createElement("span"); q.className = "q"; q.textContent = d.q;
+      var v = document.createElement("span"); v.className = "v"; v.textContent = pct >= 1 ? "listo · " + d.v : d.v;
+      ct.appendChild(q); ct.appendChild(v); li.appendChild(ct);
+      var med = document.createElement("div"); med.className = "medidor";
+      var bar = document.createElement("span"); bar.style.transform = "scaleX(" + pct + ")";
+      med.appendChild(bar); li.appendChild(med);
+      var pi = document.createElement("div"); pi.className = "pista-txt"; pi.textContent = d.pista;
+      li.appendChild(pi);
+      elCriterios.appendChild(li);
+    });
+
+    elVeredictoListo.setAttribute("data-listo", listos === 4 ? "si" : "no");
+    elVeredictoListo.textContent = listos === 4
+      ? "Las cuatro en verde. En CSS basico ya no te queda nada que te puedan preguntar y no hayas hecho varias veces con el reloj corriendo."
+      : listos + " de 4 condiciones cumplidas. Haz la sesion de hoy: es el camino mas corto para las cuatro.";
+  }
+
+  // ---------- examen ----------
+  function mezclar(a){
+    var i, j, t;
+    for(i=a.length-1;i>0;i--){ j = Math.floor(Math.random()*(i+1)); t=a[i]; a[i]=a[j]; a[j]=t; }
+    return a;
+  }
+  function iniciarExamen(){
+    var todos = EJERCICIOS.map(function(e,i){ return i; });
+    var sel = mezclar(todos).slice(0,6);
+    examen = {indices:sel, pos:0, puntos:0, intentos:0, t0:Date.now(), timer:null, fallados:[], contado:false};
+    irModo("examen");
+    examen.timer = setInterval(pintarCrono, 500);
+    pintarExamen();
+    ir(sel[0]);
+  }
+  function pararCrono(){ if(examen && examen.timer){ clearInterval(examen.timer); examen.timer = null; } }
+  function pintarCrono(){
+    if(!examen) return;
+    var s = Math.floor((Date.now()-examen.t0)/1000);
+    var mm = Math.floor(s/60), ss = s%60;
+    $("ex-t").textContent = (mm<10?"0":"")+mm+":"+(ss<10?"0":"")+ss;
+  }
+  function pintarExamen(){
+    if(!examen) return;
+    $("ex-n").textContent = (examen.pos+1) + "/" + examen.indices.length;
+    $("ex-p").textContent = notaActual().replace(".", ",");
+    pintarCrono();
+  }
+  function notaActual(){
+    if(!examen) return "0,0";
+    return (Math.round(examen.puntos / examen.indices.length * 10 * 10) / 10).toFixed(1);
+  }
+  function anotarExamen(acierto){
+    if(!examen || examen.contado) return;
+    if(acierto){
+      var p = examen.intentos <= 1 ? 1 : (examen.intentos === 2 ? 0.6 : 0.3);
+      examen.puntos += p;
+      examen.contado = true;
+    } else {
+      var id = EJERCICIOS[examen.indices[examen.pos]].id;
+      if(examen.fallados.indexOf(id) < 0) examen.fallados.push(id);
+    }
+    pintarExamen();
+  }
+  function siguienteExamen(){
+    if(!examen) return;
+    examen.pos++;
+    examen.intentos = 0;
+    examen.contado = false;
+    if(examen.pos >= examen.indices.length){ terminarExamen(); return; }
+    pintarExamen();
+    ir(examen.indices[examen.pos]);
+  }
+  function terminarExamen(){
+    var nota = notaActual();
+    var segs = Math.floor((Date.now()-examen.t0)/1000);
+    var mm = Math.floor(segs/60), ss = segs%60;
+    var tiempo = (mm<10?"0":"")+mm+":"+(ss<10?"0":"")+ss;
+    var fallados = examen.fallados.slice();
+    pararCrono();
+    var meta = estado.__meta || (estado.__meta = {});
+    var num = parseFloat(nota);
+    if(meta.mejorNota === null || meta.mejorNota === undefined || num > parseFloat(meta.mejorNota)){ meta.mejorNota = nota; meta.mejorTiempo = tiempo; }
+    if(!meta.notas) meta.notas = [];
+    meta.notas.push(nota);
+    if(meta.notas.length > 20) meta.notas = meta.notas.slice(-20);
+    guardar(); pintarMarcador(); pintarCriterios();
+
+    examen = null;
+    irModo("practica");
+    elTitulo.textContent = "Examen terminado";
+    elTipo.textContent = "resultado";
+    elEnun.textContent = "Nota " + nota.replace(".", ",") + " sobre 10 en " + tiempo + ". Cada pregunta vale un punto completo si aciertas a la primera, 0,6 al segundo intento y 0,3 despues.";
+    elReq.innerHTML = "";
+    elEditorZona.hidden = true; elLineas.hidden = true;
+    bComp.hidden = true; bReset.hidden = true;
+
+    var extra = document.createElement("div");
+    if(fallados.length){
+      var ul = document.createElement("div");
+      ul.textContent = "Fallaste en: " + fallados.map(function(id){
+        var e = null, i;
+        for(i=0;i<EJERCICIOS.length;i++){ if(EJERCICIOS[i].id===id){ e=EJERCICIOS[i]; break; } }
+        return e ? e.titulo : id;
+      }).join(", ") + ".";
+      extra.appendChild(ul);
+    }
+    veredicto(parseFloat(nota) >= 5 ? "ok" : "mal",
+      "Nota " + nota.replace(".", ",") + " / 10",
+      fallados.length ? "Repasa lo que fallaste antes de repetir el examen." : "Pleno, sin un solo fallo. Repitelo en unos dias para que no se te olvide.",
+      extra.childNodes.length ? extra : null);
+  }
+
+  // ---------- editor ----------
+  function insertar(izq, der){
+    var a = elEditor.selectionStart, b = elEditor.selectionEnd, v = elEditor.value;
+    var sel = v.slice(a,b);
+    elEditor.value = v.slice(0,a) + izq + sel + (der||"") + v.slice(b);
+    var cursor = a + izq.length + sel.length;
+    elEditor.selectionStart = elEditor.selectionEnd = cursor;
+    elEditor.focus();
+    actualizarPos();
+  }
+  function pintarSimbolos(){
+    var defs = [
+      ["{ }", "{\n  ", "\n}"], [":", ": ", ""], [";", ";", ""], [".", ".", ""], ["#", "#", ""],
+      [",", ", ", ""], ["px", "px", ""], ["%", "%", ""], ["( )", "(", ")"], ["\"", "\"", ""],
+      ["/* */", "/* ", " */"], ["<style>", "<style>\n", "\n</style>"], ["<link>", '<link rel="stylesheet" href="estilos.css">', ""]
+    ];
+    elSimbolos.innerHTML = "";
+    defs.forEach(function(d){
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = d[0]; b.title = "Insertar " + d[0];
+      b.addEventListener("click", function(){ insertar(d[1], d[2]); });
+      elSimbolos.appendChild(b);
+    });
+  }
+
+  function actualizarPos(){
+    var v = elEditor.value.slice(0, elEditor.selectionStart);
+    var ln = v.split("\n").length;
+    var col = v.length - v.lastIndexOf("\n");
+    elPos.textContent = "linea " + ln + " · col " + col;
+  }
+
+  // ---------- quien practica ----------
+  var elPerfilCaja=$("perfil-caja"), elPerfilLista=$("perfil-lista"), elPerfilNuevo=$("perfil-nuevo");
+
+  function pintarPersona(){
+    elSync.textContent = "progreso de: " + persona;
+    $("chip-persona-nombre").textContent = persona;
+  }
+  function alternarSelector(){
+    elPerfilCaja.hidden = !elPerfilCaja.hidden;
+    if(!elPerfilCaja.hidden){
+      pintarListaPersonas();
+      elPerfilNuevo.value = "";
+      elPerfilCaja.scrollIntoView({block:"nearest", behavior:"smooth"});
+      elPerfilNuevo.focus();
+    }
+  }
+  function pintarListaPersonas(){
+    var l = listaPersonas();
+    elPerfilLista.innerHTML = "";
+    l.forEach(function(n){
+      var b = document.createElement("button");
+      b.className = "btn"; b.type = "button"; b.textContent = n;
+      if(n.toLowerCase() === persona.toLowerCase()) b.setAttribute("aria-current","true");
+      b.addEventListener("click", function(){ entrarComo(n); });
+      elPerfilLista.appendChild(b);
+    });
+  }
+  function entrarComo(nombre){
+    nombre = String(nombre || "").replace(/\s+/g," ").trim().slice(0,24);
+    if(!nombre) return;
+    guardarLocal();               // lo de quien estaba se queda en su ranura
+    anotarPersona(nombre);
+    escribir(CLAVE_ACTIVO, nombre);
+    location.reload();            // arranque limpio con el progreso del que entra
+  }
+
+  elSync.addEventListener("click", alternarSelector);
+  $("chip-persona").addEventListener("click", alternarSelector);
+  $("perfil-cerrar").addEventListener("click", function(){ elPerfilCaja.hidden = true; });
+  $("perfil-entrar").addEventListener("click", function(){ entrarComo(elPerfilNuevo.value); });
+  elPerfilNuevo.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ e.preventDefault(); entrarComo(elPerfilNuevo.value); }
+  });
+
+  // ---------- eventos ----------
+  $("btn-saltar").addEventListener("click", function(){
+    if(modo === "examen") siguienteExamen();
+    else if(modo === "hoy") siguienteSesion();
+    else if(cola) siguienteRepaso();
+    else ir(actual+1);
+  });
+  $("cerrar-guia").addEventListener("click", function(){
+    elGuia.hidden = true;
+    try{ localStorage.setItem("taller-css-guia","vista"); }catch(e){}
+  });
+  $("m-aprender").addEventListener("click", function(){ cola = null; irModo("aprender"); abrirLeccion(leccionActual); });
+  $("leccion-practicar").addEventListener("click", practicarLeccion);
+  $("leccion-siguiente").addEventListener("click", function(){ marcarLeccionVista(); abrirLeccion(leccionActual+1); });
+  $("leccion-anterior").addEventListener("click", function(){ abrirLeccion(leccionActual-1); });
+  $("m-hoy").addEventListener("click", function(){ cola = null; iniciarSesion(); });
+  $("hoy-saltar").addEventListener("click", function(){ if(sesion) siguienteSesion(); });
+  $("m-practica").addEventListener("click", function(){ cola = null; irModo("practica"); ir(actual); });
+  $("m-examen").addEventListener("click", iniciarExamen);
+  $("m-banco").addEventListener("click", function(){ cola = null; irModo("banco"); });
+  $("ex-abandonar").addEventListener("click", function(){ pararCrono(); examen = null; irModo("practica"); ir(actual); });
+
+  bComp.addEventListener("click", comprobar);
+  bReset.addEventListener("click", function(){
+    if(modo === "banco"){ elEditor.value = BANCO_INICIAL; textoBanco = elEditor.value; limpiarVeredicto(); revisarEnVivo(); elEditor.focus(); return; }
+    var ej = EJERCICIOS[actual];
+    elEditor.value = ej.inicio || "";
+    limpiarVeredicto(); pintarRequisitos(ej, null); revisarEnVivo(); elEditor.focus();
+  });
+  bSig.addEventListener("click", function(){
+    if(modo === "examen") siguienteExamen();
+    else if(modo === "hoy") siguienteSesion();
+    else if(cola) siguienteRepaso();
+    else ir(actual+1);
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+  bPista.addEventListener("click", function(){
+    elPista.hidden = !elPista.hidden;
+    bPista.textContent = elPista.hidden ? "Ver pista" : "Ocultar pista";
+  });
+  bRepaso.addEventListener("click", iniciarRepaso);
+  bSol.addEventListener("click", function(){
+    var ej = EJERCICIOS[actual];
+    if(!ej || !ej.solucion) return;
+    elEditor.value = ej.solucion;
+    revisarEnVivo();
+    veredicto("mal","Solucion cargada","Leela, entiende por que funciona y pulsa Empezar este de cero para escribirla tu. Este ejercicio ya no cuenta como resuelto a la primera.");
+    var s = est(ej.id); s.intentos = Math.max(s.intentos, 2); guardar(); pintarMapa();
+  });
+  bDesc.addEventListener("click", function(){
+    if(descargas){ descargas.save({filename:"index.html", data:elEditor.value}).then(null, function(){}); return; }
+    var blob = new Blob([elEditor.value], {type:"text/html;charset=utf-8"});
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = "index.html";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+  });
+  elEditor.addEventListener("keyup", actualizarPos);
+  elEditor.addEventListener("click", actualizarPos);
+  elEditor.addEventListener("input", function(){
+    if(modo === "banco") textoBanco = elEditor.value;
+    revisarConRetardo();
+  });
+  elEditor.addEventListener("keydown", function(e){
+    if(e.key === "Tab"){
+      e.preventDefault();
+      var a = elEditor.selectionStart, b = elEditor.selectionEnd, v = elEditor.value;
+      elEditor.value = v.slice(0,a) + "  " + v.slice(b);
+      elEditor.selectionStart = elEditor.selectionEnd = a + 2;
+    }
+    if((e.ctrlKey || e.metaKey) && e.key === "Enter"){ e.preventDefault(); comprobar(); }
+  });
+
+  // ---------- arranque ----------
+  elegirPersona();
+  leerLocal();
+  pintarPersona();
+  $("sub-practica").textContent = EJERCICIOS.length + " ejercicios guiados";
+  pintarSimbolos();
+  pintarCriterios();
+  try{ if(!localStorage.getItem("taller-css-guia")) elGuia.hidden = false; }catch(e){ elGuia.hidden = false; }
+  pintarTemario();
+  var vistas = leccionesVistas(), cuantasVistas = 0, primeraSinVer = 0, k;
+  for(k=0;k<LECCIONES.length;k++){ if(vistas[LECCIONES[k].id]) cuantasVistas++; }
+  for(k=0;k<LECCIONES.length;k++){ if(!vistas[LECCIONES[k].id]){ primeraSinVer = k; break; } }
+  if(cuantasVistas < LECCIONES.length){
+    irModo("aprender");
+    abrirLeccion(primeraSinVer);
+    ir(0);
+    irModo("aprender");
+  } else {
+    iniciarSesion();
+  }
+
+  // Dentro de Claude las descargas pasan por el permiso downloads; fuera, por un enlace normal.
+  if(window.claude && typeof window.claude.use === "function"){
+    window.claude.use("downloads").then(function(d){ if(d) descargas = d; }).then(null, function(){});
+  }
+  window.addEventListener("resize", function(){
+    if(!elCajaVista.hidden) ajustarAlto(elVistaTu);
+    if(!elCajaObjetivo.hidden) ajustarAlto(elVistaObjetivo);
+  });
+})();
+</script>
+
+
+</body>
+</html>
